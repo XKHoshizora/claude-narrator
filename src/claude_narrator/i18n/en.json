@@ -1,0 +1,41 @@
+{
+    "PreToolUse": {
+        "Read": "Reading {file_path}",
+        "Write": "Writing to {file_path}",
+        "Edit": "Editing {file_path}",
+        "Bash": "Running command",
+        "Glob": "Searching files",
+        "Grep": "Searching code",
+        "Agent": "Starting agent",
+        "default": "Using {tool_name}"
+    },
+    "PostToolUse": {
+        "Read": "Read complete",
+        "Write": "Write complete",
+        "Edit": "Edit complete",
+        "Bash": "Command complete",
+        "default": "{tool_name} done"
+    },
+    "PostToolUseFailure": {
+        "Bash": "Command failed",
+        "default": "{tool_name} failed"
+    },
+    "Stop": {
+        "default": "Task complete"
+    },
+    "Notification": {
+        "default": "Attention needed"
+    },
+    "SubagentStart": {
+        "default": "Starting subtask"
+    },
+    "SubagentStop": {
+        "default": "Subtask complete"
+    },
+    "SessionStart": {
+        "default": "Session started"
+    },
+    "PreCompact": {
+        "default": "Compacting context"
+    }
+}

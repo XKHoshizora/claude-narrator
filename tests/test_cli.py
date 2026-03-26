@@ -1,0 +1,37 @@
+from click.testing import CliRunner
+
+import pytest
+
+from claude_narrator.cli import main
+
+
+@pytest.fixture
+def runner():
+    return CliRunner()
+
+
+class TestCLI:
+    def test_help(self, runner):
+        result = runner.invoke(main, ["--help"])
+        assert result.exit_code == 0
+        assert "Usage" in result.output
+
+    def test_test_command_exists(self, runner):
+        result = runner.invoke(main, ["test", "--help"])
+        assert result.exit_code == 0
+
+    def test_start_command_exists(self, runner):
+        result = runner.invoke(main, ["start", "--help"])
+        assert result.exit_code == 0
+
+    def test_stop_command_exists(self, runner):
+        result = runner.invoke(main, ["stop", "--help"])
+        assert result.exit_code == 0
+
+    def test_install_command_exists(self, runner):
+        result = runner.invoke(main, ["install", "--help"])
+        assert result.exit_code == 0
+
+    def test_uninstall_command_exists(self, runner):
+        result = runner.invoke(main, ["uninstall", "--help"])
+        assert result.exit_code == 0

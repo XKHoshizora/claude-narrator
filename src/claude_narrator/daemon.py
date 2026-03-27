@@ -13,6 +13,7 @@ from claude_narrator.config import CONFIG_DIR, load_config
 from claude_narrator.ipc import create_server
 from claude_narrator.ipc.base import IPCServer
 from claude_narrator.narration.template import TemplateNarrator
+from claude_narrator.narration.verbosity import should_narrate
 from claude_narrator.player import AudioPlayer
 from claude_narrator.queue import EVENT_PRIORITY, NarrationItem, NarrationQueue, Priority
 from claude_narrator.tts import create_engine
@@ -123,11 +124,15 @@ class Daemon:
             if not self._config["general"]["enabled"]:
                 continue
 
+            event_name = event.get("hook_event_name", "")
+            tool_name = event.get("tool_name")
+            if not should_narrate(event_name, tool_name, self._config["general"]["verbosity"]):
+                continue
+
             text = self._narrator.narrate(event)
             if text is None:
                 continue
 
-            event_name = event.get("hook_event_name", "")
             priority = EVENT_PRIORITY.get(event_name, Priority.LOW)
             item = NarrationItem(text=text, priority=priority, event=event)
             await self._queue.put(item)

@@ -35,6 +35,7 @@ claude-narrator test "こんにちは、Claude Narrator の準備ができまし
 claude-narrator start [-f|--foreground] [--web]  # デーモン起動（フォアグラウンド / Web UI 付き）
 claude-narrator stop                              # デーモン停止
 claude-narrator restart [-f|--foreground]          # デーモン再起動
+claude-narrator reload                            # 設定のホットリロード（再起動なし）
 claude-narrator status                            # デーモン状態表示
 claude-narrator test "テキスト"                   # TTS テスト
 claude-narrator install                           # Claude Code に hooks をインストール
@@ -146,6 +147,7 @@ flowchart LR
 claude-narrator config set narration.mode llm
 claude-narrator config set narration.llm.provider ollama
 claude-narrator config set narration.llm.model qwen2.5:3b
+claude-narrator reload  # 再起動なしで反映
 ```
 
 ### カスタムフィルター

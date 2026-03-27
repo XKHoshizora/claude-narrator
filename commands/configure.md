@@ -41,9 +41,14 @@ claude-narrator config set web.enabled true
 claude-narrator config set narration.mode llm
 ```
 
-## Step 4: Restart daemon
+## Step 4: Apply config changes
 
-After changing config:
+After changing config, hot-reload without restarting:
+```bash
+claude-narrator reload
+```
+
+If switching TTS engine or narration mode, a full restart may be needed:
 ```bash
 claude-narrator restart
 ```

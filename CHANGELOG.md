@@ -15,7 +15,8 @@ All notable changes to Claude Narrator will be documented in this file.
 - Configuration system with deep merge and validation
 
 ### Phase 2: Polish
-- Full CLI: `status`, `restart`, `config get/set/reset`, `cache clear`
+- Full CLI: `status`, `restart`, `reload`, `config get/set/reset`, `cache clear`
+- Hot-reload config via `reload` command (SIGHUP signal, no daemon restart needed)
 - Claude Code plugin format (`.claude-plugin/`) with `/claude-narrator:setup` wizard
 - Verbosity filtering (minimal/normal/verbose)
 - Event coalescer — merges rapid consecutive events

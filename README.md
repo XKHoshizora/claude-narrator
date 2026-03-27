@@ -35,6 +35,7 @@ claude-narrator test "Hello, Claude Narrator is ready"
 claude-narrator start [-f|--foreground] [--web]  # Start daemon (foreground / with web UI)
 claude-narrator stop                              # Stop daemon
 claude-narrator restart [-f|--foreground]          # Restart daemon
+claude-narrator reload                            # Hot-reload config (no restart)
 claude-narrator status                            # Show daemon status
 claude-narrator test "text"                       # Test TTS output
 claude-narrator install                           # Install hooks into Claude Code
@@ -146,6 +147,7 @@ Config file: `~/.claude-narrator/config.json`
 claude-narrator config set narration.mode llm
 claude-narrator config set narration.llm.provider ollama
 claude-narrator config set narration.llm.model qwen2.5:3b
+claude-narrator reload  # Apply without restart
 ```
 
 ### Custom Filters

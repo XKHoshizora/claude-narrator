@@ -35,6 +35,7 @@ claude-narrator test "你好，Claude Narrator 已就绪"
 claude-narrator start [-f|--foreground] [--web]  # 启动守护进程（前台 / 带 Web UI）
 claude-narrator stop                              # 停止守护进程
 claude-narrator restart [-f|--foreground]          # 重启守护进程
+claude-narrator reload                            # 热重载配置（不重启）
 claude-narrator status                            # 查看运行状态
 claude-narrator test "文本"                       # 测试语音输出
 claude-narrator install                           # 安装 hooks 到 Claude Code
@@ -146,6 +147,7 @@ flowchart LR
 claude-narrator config set narration.mode llm
 claude-narrator config set narration.llm.provider ollama
 claude-narrator config set narration.llm.model qwen2.5:3b
+claude-narrator reload  # 无需重启即可生效
 ```
 
 ### 自定义过滤规则

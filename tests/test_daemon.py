@@ -85,3 +85,62 @@ class TestDaemon:
 
         assert len(narrated_texts) >= 1
         assert "Task complete" in narrated_texts[0]
+
+    def test_reload_config_updates_narrator(self, tmp_config_dir):
+        """reload_config() re-reads config and rebuilds narrator."""
+        import json
+        from claude_narrator.daemon import Daemon
+
+        config = {
+            "general": {"verbosity": "normal", "language": "en", "enabled": True},
+            "tts": {"engine": "edge-tts", "voice": "en-US-AriaNeural"},
+            "narration": {"mode": "template", "max_queue_size": 5,
+                          "max_narration_seconds": 15, "skip_rapid_events": True},
+            "cache": {"enabled": False},
+            "filters": {},
+            "web": {"enabled": False},
+        }
+
+        # Write initial config
+        config_file = tmp_config_dir / "config.json"
+        config_file.write_text(json.dumps(config))
+
+        daemon = Daemon(config=config, config_dir=tmp_config_dir)
+        assert daemon._config["general"]["language"] == "en"
+
+        # Change language in config file
+        config["general"]["language"] = "zh"
+        config_file.write_text(json.dumps(config))
+
+        daemon.reload_config()
+        assert daemon._config["general"]["language"] == "zh"
+
+    def test_reload_config_rebuilds_engine(self, tmp_config_dir):
+        """reload_config() rebuilds TTS engine from new config."""
+        import json
+        from claude_narrator.daemon import Daemon
+        from claude_narrator.tts.edge import EdgeTTSEngine
+
+        config = {
+            "general": {"verbosity": "normal", "language": "en", "enabled": True},
+            "tts": {"engine": "edge-tts", "voice": "en-US-AriaNeural"},
+            "narration": {"mode": "template", "max_queue_size": 5,
+                          "max_narration_seconds": 15, "skip_rapid_events": True},
+            "cache": {"enabled": False},
+            "filters": {},
+            "web": {"enabled": False},
+        }
+
+        config_file = tmp_config_dir / "config.json"
+        config_file.write_text(json.dumps(config))
+
+        daemon = Daemon(config=config, config_dir=tmp_config_dir)
+        daemon._engine = EdgeTTSEngine(voice="en-US-AriaNeural")
+
+        # Change voice
+        config["tts"]["voice"] = "zh-CN-XiaoxiaoNeural"
+        config_file.write_text(json.dumps(config))
+
+        daemon.reload_config()
+        assert isinstance(daemon._engine, EdgeTTSEngine)
+        assert daemon._engine._voice == "zh-CN-XiaoxiaoNeural"

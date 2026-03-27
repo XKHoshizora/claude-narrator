@@ -60,3 +60,8 @@ class TestCLI:
     def test_cache_clear_help(self, runner):
         result = runner.invoke(main, ["cache", "clear", "--help"])
         assert result.exit_code == 0
+
+    def test_reload_command_not_running(self, runner):
+        result = runner.invoke(main, ["reload"])
+        assert result.exit_code == 0
+        assert "not running" in result.output.lower()

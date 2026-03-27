@@ -5,6 +5,7 @@ from __future__ import annotations
 import asyncio
 import logging
 import os
+import signal
 import sys
 from pathlib import Path
 from typing import Any
@@ -107,6 +108,11 @@ class Daemon:
 
         logger.info("Daemon starting (PID %d)", os.getpid())
 
+        # Register SIGHUP for hot-reload (Unix only)
+        if sys.platform != "win32":
+            loop = asyncio.get_running_loop()
+            loop.add_signal_handler(signal.SIGHUP, self.reload_config)
+
         try:
             await self._server.start()
             await asyncio.gather(
@@ -121,6 +127,45 @@ class Daemon:
     async def stop(self) -> None:
         """Signal the daemon to stop."""
         self._running = False
+
+    def reload_config(self) -> None:
+        """Hot-reload configuration without restarting the daemon.
+
+        Re-reads config.json and rebuilds narrator, coalescer, and TTS engine.
+        The IPC server, player, and queue are preserved.
+        """
+        logger.info("Reloading configuration...")
+        self._config = load_config(self._config_dir)
+
+        # Rebuild narrator
+        if self._config["narration"]["mode"] == "llm":
+            from claude_narrator.narration.llm import LLMNarrator
+            llm_cfg = self._config["narration"].get("llm", {})
+            self._narrator = LLMNarrator(
+                provider=llm_cfg.get("provider", "ollama"),
+                model=llm_cfg.get("model", "qwen2.5:3b"),
+                language=self._config["general"]["language"],
+            )
+        else:
+            self._narrator = TemplateNarrator(
+                language=self._config["general"]["language"]
+            )
+
+        # Rebuild coalescer
+        self._coalescer = EventCoalescer(
+            window_seconds=2.0 if self._config["narration"]["skip_rapid_events"] else 0.0
+        )
+
+        # Rebuild TTS engine
+        self._engine = create_engine(self._config)
+
+        # Update queue max size
+        self._queue._max_size = self._config["narration"]["max_queue_size"]
+
+        logger.info("Configuration reloaded: engine=%s, language=%s, verbosity=%s",
+                     self._config["tts"]["engine"],
+                     self._config["general"]["language"],
+                     self._config["general"]["verbosity"])
 
     async def _shutdown(self) -> None:
         logger.info("Daemon shutting down")

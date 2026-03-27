@@ -138,6 +138,34 @@ Config file: `~/.claude-narrator/config.json`
 | Chinese | `zh` | zh-CN-XiaoxiaoNeural |
 | Japanese | `ja` | ja-JP-NanamiNeural |
 
+### Personality
+
+Set the narration style:
+
+```bash
+claude-narrator config set narration.personality tengu
+claude-narrator reload
+```
+
+| Personality | Style | Example |
+|-------------|-------|---------|
+| `concise` (default) | Short, direct | "Reading app.py" |
+| `tengu` | Whimsical + spinner prefix | "Cogitating... diving into app.py" |
+| `professional` | Formal, detailed | "Now reading source file app.py" |
+| `casual` | Conversational | "Checking out app.py" |
+
+Combine multiple personalities (layered composition):
+
+```bash
+claude-narrator config set narration.personality '["tengu", "professional"]'
+```
+
+Enable auto-update of Tengu spinner words from GitHub:
+
+```bash
+claude-narrator config set narration.tengu_prefix_auto_update true
+```
+
 ### Narration Modes
 
 - **Template** (default): Fast, deterministic. Uses i18n JSON templates to generate short phrases like "Reading src/app.py".
@@ -205,6 +233,18 @@ claude-narrator config set web.enabled true
 claude-narrator restart
 # Open http://127.0.0.1:19822
 ```
+
+### Context Monitor
+
+Optional voice announcements when token usage reaches thresholds:
+
+```bash
+claude-narrator config set context_monitor.enabled true
+claude-narrator config set context_monitor.thresholds '[50, 70, 85, 95]'
+claude-narrator reload
+```
+
+> **Warning**: This feature uses Claude Code's statusline slot. If you use claude-hud or another statusline plugin, they will conflict. Only one statusline can be active at a time.
 
 ## Requirements
 

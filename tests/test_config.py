@@ -92,3 +92,36 @@ class TestLoadConfig:
         config_file.write_text("not valid json{{{")
         result = load_config(config_dir=tmp_config_dir)
         assert result == validate_config(DEFAULT_CONFIG)
+
+
+class TestPersonalityConfig:
+    def test_default_personality(self):
+        assert DEFAULT_CONFIG["narration"]["personality"] == "concise"
+
+    def test_valid_single(self):
+        config = deep_merge(DEFAULT_CONFIG, {"narration": {"personality": "tengu"}})
+        assert validate_config(config)["narration"]["personality"] == "tengu"
+
+    def test_valid_multi(self):
+        config = deep_merge(DEFAULT_CONFIG, {"narration": {"personality": ["tengu", "professional"]}})
+        assert validate_config(config)["narration"]["personality"] == ["tengu", "professional"]
+
+    def test_invalid_falls_back(self):
+        config = deep_merge(DEFAULT_CONFIG, {"narration": {"personality": "invalid"}})
+        assert validate_config(config)["narration"]["personality"] == "concise"
+
+    def test_mixed_filters_invalid(self):
+        config = deep_merge(DEFAULT_CONFIG, {"narration": {"personality": ["tengu", "invalid"]}})
+        assert validate_config(config)["narration"]["personality"] == ["tengu"]
+
+
+class TestContextMonitorConfig:
+    def test_default_disabled(self):
+        assert DEFAULT_CONFIG["context_monitor"]["enabled"] is False
+
+    def test_default_thresholds(self):
+        assert DEFAULT_CONFIG["context_monitor"]["thresholds"] == [50, 70, 85, 95]
+
+    def test_invalid_thresholds(self):
+        config = deep_merge(DEFAULT_CONFIG, {"context_monitor": {"thresholds": "bad"}})
+        assert validate_config(config)["context_monitor"]["thresholds"] == [50, 70, 85, 95]

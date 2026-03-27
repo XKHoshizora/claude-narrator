@@ -1,0 +1,33 @@
+{
+    "_meta": {"name": "professional", "description": "正式详细播报风格"},
+    "_prefixes": [],
+    "_suffixes": [],
+    "PreToolUse": {
+        "Read": "正在读取源文件 {file_path}",
+        "Write": "准备写入文件 {file_path}",
+        "Edit": "正在对 {file_path} 进行修改",
+        "Bash": "正在执行命令",
+        "Glob": "正在进行文件搜索",
+        "Grep": "正在进行代码检索",
+        "Agent": "正在初始化子代理",
+        "default": "正在调用 {tool_name}"
+    },
+    "PostToolUse": {
+        "Read": "文件 {file_path} 读取完成",
+        "Write": "文件 {file_path} 写入完成",
+        "Edit": "文件 {file_path} 修改已应用",
+        "Bash": "命令执行完成",
+        "default": "{tool_name} 操作完成"
+    },
+    "PostToolUseFailure": {
+        "Bash": "命令执行遇到错误",
+        "default": "{tool_name} 操作失败"
+    },
+    "Stop": {"default": "全部任务已完成"},
+    "Notification": {"default": "需要您的关注"},
+    "SubagentStart": {"default": "子代理已初始化"},
+    "SubagentStop": {"default": "子代理已完成"},
+    "SessionStart": {"default": "新会话已初始化"},
+    "PreCompact": {"default": "上下文窗口接近容量上限，正在启动压缩"},
+    "ContextThreshold": {"default": "上下文窗口使用率已达 {threshold}%"}
+}

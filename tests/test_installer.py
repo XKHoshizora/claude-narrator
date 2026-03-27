@@ -70,3 +70,33 @@ class TestGetPythonPath:
     def test_returns_current_python(self):
         path = _get_python_path()
         assert sys.executable in path or "python" in path
+
+
+from claude_narrator.installer import install_statusline, uninstall_statusline
+
+
+class TestStatuslineInstall:
+    def test_install_adds_statusline(self, tmp_claude_dir):
+        settings_file = tmp_claude_dir / "settings.json"
+        settings_file.write_text("{}")
+        install_statusline(claude_dir=tmp_claude_dir)
+        settings = json.loads(settings_file.read_text())
+        assert "statusLine" in settings
+        assert "context_monitor" in settings["statusLine"]["command"]
+
+    def test_uninstall_removes_ours(self, tmp_claude_dir):
+        settings_file = tmp_claude_dir / "settings.json"
+        settings_file.write_text("{}")
+        install_statusline(claude_dir=tmp_claude_dir)
+        uninstall_statusline(claude_dir=tmp_claude_dir)
+        settings = json.loads(settings_file.read_text())
+        assert "statusLine" not in settings
+
+    def test_uninstall_preserves_foreign(self, tmp_claude_dir):
+        settings_file = tmp_claude_dir / "settings.json"
+        settings_file.write_text(json.dumps({
+            "statusLine": {"type": "command", "command": "claude-hud"}
+        }))
+        uninstall_statusline(claude_dir=tmp_claude_dir)
+        settings = json.loads(settings_file.read_text())
+        assert "statusLine" in settings  # Not ours, preserved

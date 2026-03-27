@@ -116,3 +116,63 @@ def uninstall_hooks(claude_dir: Path | None = None) -> None:
         encoding="utf-8",
     )
     logger.info("Hooks uninstalled from %s", settings_file)
+
+
+STATUSLINE_MARKER = "claude_narrator.context_monitor"
+
+
+def install_statusline(claude_dir: Path | None = None) -> None:
+    """Register context monitor as Claude Code statusline."""
+    claude_dir = claude_dir or CLAUDE_DIR
+    settings_file = claude_dir / "settings.json"
+
+    if settings_file.exists():
+        try:
+            settings = json.loads(settings_file.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, OSError):
+            settings = {}
+    else:
+        settings = {}
+
+    # Warn if existing statusline is not ours
+    existing = settings.get("statusLine")
+    if existing and STATUSLINE_MARKER not in str(existing.get("command", "")):
+        logger.warning(
+            "Existing statusLine detected: %s. "
+            "Context monitor will replace it. Only one statusLine can be active.",
+            existing.get("command", "unknown"),
+        )
+
+    python_path = _get_python_path()
+    settings["statusLine"] = {
+        "type": "command",
+        "command": f"{python_path} -m {STATUSLINE_MARKER}",
+    }
+
+    settings_file.write_text(
+        json.dumps(settings, indent=2, ensure_ascii=False),
+        encoding="utf-8",
+    )
+    logger.info("Statusline registered for context monitor")
+
+
+def uninstall_statusline(claude_dir: Path | None = None) -> None:
+    """Remove context monitor statusline from Claude Code settings."""
+    claude_dir = claude_dir or CLAUDE_DIR
+    settings_file = claude_dir / "settings.json"
+    if not settings_file.exists():
+        return
+
+    try:
+        settings = json.loads(settings_file.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return
+
+    statusline = settings.get("statusLine", {})
+    if STATUSLINE_MARKER in str(statusline.get("command", "")):
+        del settings["statusLine"]
+        settings_file.write_text(
+            json.dumps(settings, indent=2, ensure_ascii=False),
+            encoding="utf-8",
+        )
+        logger.info("Statusline unregistered")

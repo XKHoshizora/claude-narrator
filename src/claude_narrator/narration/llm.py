@@ -33,13 +33,14 @@ class LLMNarrator:
         provider: str = "ollama",
         model: str = "qwen2.5:3b",
         language: str = "en",
+        personality: str | list[str] = "concise",
         timeout: float = 3.0,
     ) -> None:
         self._provider = provider
         self._model = model
         self._language = language
         self._timeout = timeout
-        self._fallback = TemplateNarrator(language=language)
+        self._fallback = TemplateNarrator(language=language, personality=personality)
         self._recent_events: list[dict] = []
 
     def narrate(self, event: dict[str, Any]) -> str | None:

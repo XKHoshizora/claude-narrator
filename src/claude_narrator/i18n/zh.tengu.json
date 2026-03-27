@@ -1,0 +1,33 @@
+{
+    "_meta": {"name": "tengu", "description": "趣味 Anthropic 风格播报"},
+    "_prefixes": [],
+    "_suffixes": [],
+    "PreToolUse": {
+        "Read": "潜入 {file_path}",
+        "Write": "召唤 {file_path}",
+        "Edit": "捣鼓 {file_path}",
+        "Bash": "释放一条命令",
+        "Glob": "探索文件",
+        "Grep": "搜寻代码",
+        "Agent": "召唤小助手",
+        "default": "挥舞 {tool_name}"
+    },
+    "PostToolUse": {
+        "Read": "吸收了 {file_path}",
+        "Write": "创造了 {file_path}",
+        "Edit": "改造了 {file_path}",
+        "Bash": "命令被征服",
+        "default": "{tool_name} 搞定"
+    },
+    "PostToolUseFailure": {
+        "Bash": "命令翻车了",
+        "default": "{tool_name} 失手了"
+    },
+    "Stop": {"default": "任务达成"},
+    "Notification": {"default": "嘿，需要你注意一下"},
+    "SubagentStart": {"default": "派出小分队"},
+    "SubagentStop": {"default": "小分队回来了"},
+    "SessionStart": {"default": "出发"},
+    "PreCompact": {"default": "整理一下记忆库"},
+    "ContextThreshold": {"default": "上下文已经 {threshold}% 满了"}
+}

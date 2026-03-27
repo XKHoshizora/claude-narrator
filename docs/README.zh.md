@@ -138,6 +138,28 @@ flowchart LR
 | 中文 | `zh` | zh-CN-XiaoxiaoNeural |
 | 日本語 | `ja` | ja-JP-NanamiNeural |
 
+### 播报风格 (Personality)
+
+设置播报风格：
+
+```bash
+claude-narrator config set narration.personality tengu
+claude-narrator reload
+```
+
+| 风格 | 特点 | 示例 |
+|------|------|------|
+| `concise`（默认） | 简短直接 | "正在读取 app.py" |
+| `tengu` | 趣味 + spinner 前缀 | "Cogitating... 潜入 app.py" |
+| `professional` | 正式详细 | "正在读取源文件 app.py" |
+| `casual` | 口语化 | "看看 app.py" |
+
+多风格组合：
+
+```bash
+claude-narrator config set narration.personality '["tengu", "professional"]'
+```
+
 ### 播报模式
 
 - **模板模式**（默认）：快速、确定性。使用 i18n JSON 模板生成简短播报，如「正在读取 src/app.py」。
@@ -196,6 +218,17 @@ claude-narrator config set web.enabled true
 claude-narrator restart
 # 打开 http://127.0.0.1:19822
 ```
+
+### 上下文监控
+
+Token 使用量达到阈值时语音提醒：
+
+```bash
+claude-narrator config set context_monitor.enabled true
+claude-narrator reload
+```
+
+> **警告**：此功能占用 Claude Code 的 statusline 插槽。如果同时使用 claude-hud 等插件，会产生冲突。
 
 ## 环境要求
 

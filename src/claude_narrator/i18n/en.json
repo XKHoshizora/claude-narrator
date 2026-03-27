@@ -37,5 +37,6 @@
     },
     "PreCompact": {
         "default": "Compacting context"
-    }
+    },
+    "ContextThreshold": {"default": "Context {threshold} percent used"}
 }

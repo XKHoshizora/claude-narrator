@@ -1,0 +1,33 @@
+{
+    "_meta": {"name": "professional", "description": "Formal, detailed narration style"},
+    "_prefixes": [],
+    "_suffixes": [],
+    "PreToolUse": {
+        "Read": "Now reading source file {file_path}",
+        "Write": "Preparing to write file {file_path}",
+        "Edit": "Applying modifications to {file_path}",
+        "Bash": "Executing shell command",
+        "Glob": "Performing file system search",
+        "Grep": "Conducting code search",
+        "Agent": "Initializing subordinate agent",
+        "default": "Invoking {tool_name}"
+    },
+    "PostToolUse": {
+        "Read": "File {file_path} read successfully",
+        "Write": "File {file_path} written successfully",
+        "Edit": "Modifications to {file_path} applied",
+        "Bash": "Command executed successfully",
+        "default": "{tool_name} operation completed"
+    },
+    "PostToolUseFailure": {
+        "Bash": "Command execution encountered an error",
+        "default": "{tool_name} operation failed"
+    },
+    "Stop": {"default": "All tasks completed successfully"},
+    "Notification": {"default": "Your attention is required"},
+    "SubagentStart": {"default": "Subordinate agent initialized"},
+    "SubagentStop": {"default": "Subordinate agent completed"},
+    "SessionStart": {"default": "New session initialized"},
+    "PreCompact": {"default": "Context window nearing capacity, initiating compaction"},
+    "ContextThreshold": {"default": "Context window utilization has reached {threshold} percent"}
+}

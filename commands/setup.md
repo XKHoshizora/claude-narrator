@@ -51,6 +51,16 @@ Use AskUserQuestion:
 - normal (recommended) — Above + file operations, subagent activity
 - verbose — Everything
 
+## Step 5.5: Choose personality
+
+Use AskUserQuestion to ask which narration personality:
+- concise (default) — Short, direct phrases
+- tengu — Whimsical Anthropic-style with spinner words
+- professional — Formal, detailed narration
+- casual — Friendly, conversational
+
+Multiple can be combined (e.g. ["tengu", "professional"]).
+
 ## Step 6: Apply configuration
 
 Run these commands based on user's choices:

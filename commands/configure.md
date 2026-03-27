@@ -24,6 +24,8 @@ Use AskUserQuestion to ask what the user wants to configure:
 - Sound effects (enable/disable)
 - Web UI (enable/disable)
 - Narration mode (template/llm)
+- Personality (concise/tengu/professional/casual)
+- Context monitor (enable/disable, WARNING: conflicts with statusline plugins)
 
 ## Step 3: Apply changes
 
@@ -39,6 +41,9 @@ claude-narrator config set filters.ignore_tools '["Glob","Grep"]'
 claude-narrator config set sounds.enabled true
 claude-narrator config set web.enabled true
 claude-narrator config set narration.mode llm
+claude-narrator config set narration.personality tengu
+claude-narrator config set narration.personality '["tengu", "professional"]'
+claude-narrator config set context_monitor.enabled true
 ```
 
 ## Step 4: Apply config changes

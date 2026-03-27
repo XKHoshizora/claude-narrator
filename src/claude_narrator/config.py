@@ -14,6 +14,7 @@ VALID_VERBOSITIES = ("minimal", "normal", "verbose")
 VALID_ENGINES = ("edge-tts", "say", "espeak", "openai")
 VALID_LANGUAGES = ("en", "zh", "ja")
 VALID_MODES = ("template", "llm")
+VALID_PERSONALITIES = ("concise", "tengu", "professional", "casual")
 
 DEFAULT_CONFIG: dict[str, Any] = {
     "general": {
@@ -35,6 +36,8 @@ DEFAULT_CONFIG: dict[str, Any] = {
         "max_queue_size": 5,
         "max_narration_seconds": 15,
         "skip_rapid_events": True,
+        "personality": "concise",
+        "tengu_prefix_auto_update": False,
         "llm": {
             "provider": "ollama",
             "model": "qwen2.5:3b",
@@ -54,6 +57,10 @@ DEFAULT_CONFIG: dict[str, Any] = {
         "enabled": False,
         "host": "127.0.0.1",
         "port": 19822,
+    },
+    "context_monitor": {
+        "enabled": False,
+        "thresholds": [50, 70, 85, 95],
     },
 }
 
@@ -88,7 +95,25 @@ def validate_config(config: dict[str, Any]) -> dict[str, Any]:
     narration = result.get("narration", {})
     if narration.get("mode") not in VALID_MODES:
         narration["mode"] = DEFAULT_CONFIG["narration"]["mode"]
+
+    # Validate personality
+    personality = narration.get("personality", "concise")
+    if isinstance(personality, str):
+        if personality not in VALID_PERSONALITIES:
+            narration["personality"] = "concise"
+    elif isinstance(personality, list):
+        valid = [p for p in personality if p in VALID_PERSONALITIES]
+        narration["personality"] = valid if valid else "concise"
+    else:
+        narration["personality"] = "concise"
     result["narration"] = narration
+
+    # Validate context_monitor
+    ctx = result.get("context_monitor", {})
+    thresholds = ctx.get("thresholds", [50, 70, 85, 95])
+    if not isinstance(thresholds, list) or not all(isinstance(t, (int, float)) and 0 < t <= 100 for t in thresholds):
+        ctx["thresholds"] = [50, 70, 85, 95]
+    result["context_monitor"] = ctx
 
     return result
 

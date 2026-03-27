@@ -1,0 +1,33 @@
+{
+    "_meta": {"name": "casual", "description": "Relaxed, conversational narration style"},
+    "_prefixes": [],
+    "_suffixes": [],
+    "PreToolUse": {
+        "Read": "Checking out {file_path}",
+        "Write": "Putting together {file_path}",
+        "Edit": "Tweaking {file_path}",
+        "Bash": "Running something real quick",
+        "Glob": "Looking around for files",
+        "Grep": "Searching for stuff",
+        "Agent": "Getting some help",
+        "default": "Using {tool_name}"
+    },
+    "PostToolUse": {
+        "Read": "Got it, {file_path} is done",
+        "Write": "Cool, {file_path} is saved",
+        "Edit": "Alright, {file_path} updated",
+        "Bash": "That went through",
+        "default": "Done with {tool_name}"
+    },
+    "PostToolUseFailure": {
+        "Bash": "Oops, that command didn't work",
+        "default": "Hmm, {tool_name} hit a snag"
+    },
+    "Stop": {"default": "All done here"},
+    "Notification": {"default": "Heads up, need you for a sec"},
+    "SubagentStart": {"default": "Kicking off a side task"},
+    "SubagentStop": {"default": "Side task wrapped up"},
+    "SessionStart": {"default": "Hey, we're rolling"},
+    "PreCompact": {"default": "Running out of brain space, cleaning up"},
+    "ContextThreshold": {"default": "Heads up, context is {threshold} percent full"}
+}

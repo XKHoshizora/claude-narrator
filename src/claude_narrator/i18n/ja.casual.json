@@ -1,0 +1,33 @@
+{
+    "_meta": {"name": "casual", "description": "カジュアルな会話風ナレーション"},
+    "_prefixes": [],
+    "_suffixes": [],
+    "PreToolUse": {
+        "Read": "{file_path} を見てみる",
+        "Write": "{file_path} を作るよ",
+        "Edit": "{file_path} をちょっと直す",
+        "Bash": "コマンド走らせるね",
+        "Glob": "ファイル探してみる",
+        "Grep": "コード探してみる",
+        "Agent": "ヘルプ呼ぶね",
+        "default": "{tool_name} 使うよ"
+    },
+    "PostToolUse": {
+        "Read": "オッケー、{file_path} 見終わった",
+        "Write": "よし、{file_path} 保存した",
+        "Edit": "はい、{file_path} 直した",
+        "Bash": "コマンド終わったよ",
+        "default": "{tool_name} できた"
+    },
+    "PostToolUseFailure": {
+        "Bash": "あれ、コマンドがうまくいかなかった",
+        "default": "うーん、{tool_name} でちょっと問題が"
+    },
+    "Stop": {"default": "全部終わり"},
+    "Notification": {"default": "ちょっと見てほしい"},
+    "SubagentStart": {"default": "サイドタスク始めるね"},
+    "SubagentStop": {"default": "サイドタスク終わった"},
+    "SessionStart": {"default": "やるぞー"},
+    "PreCompact": {"default": "頭がいっぱいになりそう、整理するね"},
+    "ContextThreshold": {"default": "コンテキスト {threshold}% だよ"}
+}

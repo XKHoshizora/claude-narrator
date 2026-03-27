@@ -1,0 +1,33 @@
+{
+    "_meta": {"name": "professional", "description": "フォーマルな詳細ナレーションスタイル"},
+    "_prefixes": [],
+    "_suffixes": [],
+    "PreToolUse": {
+        "Read": "ソースファイル {file_path} を読み取り中",
+        "Write": "ファイル {file_path} への書き込みを準備中",
+        "Edit": "{file_path} に変更を適用中",
+        "Bash": "シェルコマンドを実行中",
+        "Glob": "ファイルシステム検索を実行中",
+        "Grep": "コード検索を実行中",
+        "Agent": "サブエージェントを初期化中",
+        "default": "{tool_name} を呼び出し中"
+    },
+    "PostToolUse": {
+        "Read": "ファイル {file_path} の読み取りが完了しました",
+        "Write": "ファイル {file_path} の書き込みが完了しました",
+        "Edit": "{file_path} への変更が適用されました",
+        "Bash": "コマンドが正常に実行されました",
+        "default": "{tool_name} 操作が完了しました"
+    },
+    "PostToolUseFailure": {
+        "Bash": "コマンド実行でエラーが発生しました",
+        "default": "{tool_name} 操作が失敗しました"
+    },
+    "Stop": {"default": "すべてのタスクが正常に完了しました"},
+    "Notification": {"default": "ご確認が必要です"},
+    "SubagentStart": {"default": "サブエージェントが初期化されました"},
+    "SubagentStop": {"default": "サブエージェントが完了しました"},
+    "SessionStart": {"default": "新しいセッションが初期化されました"},
+    "PreCompact": {"default": "コンテキストウィンドウが容量に近づいています。圧縮を開始します"},
+    "ContextThreshold": {"default": "コンテキストウィンドウの使用率が {threshold}% に達しました"}
+}

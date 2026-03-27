@@ -25,5 +25,6 @@
     "SubagentStart": { "default": "启动子任务" },
     "SubagentStop": { "default": "子任务完成" },
     "SessionStart": { "default": "会话开始" },
-    "PreCompact": { "default": "上下文压缩中" }
+    "PreCompact": { "default": "上下文压缩中" },
+    "ContextThreshold": {"default": "上下文已使用 {threshold}%"}
 }

@@ -1,0 +1,33 @@
+{
+    "_meta": {"name": "tengu", "description": "遊び心のあるAnthropic風ナレーション"},
+    "_prefixes": [],
+    "_suffixes": [],
+    "PreToolUse": {
+        "Read": "{file_path} に潜入",
+        "Write": "{file_path} を召喚中",
+        "Edit": "{file_path} をいじり中",
+        "Bash": "コマンドを解き放つ",
+        "Glob": "ファイルを探検中",
+        "Grep": "コードを狩り中",
+        "Agent": "助っ人を呼び出し",
+        "default": "{tool_name} を振るう"
+    },
+    "PostToolUse": {
+        "Read": "{file_path} を吸収した",
+        "Write": "{file_path} が現れた",
+        "Edit": "{file_path} を変形させた",
+        "Bash": "コマンドを征服",
+        "default": "{tool_name} 攻略完了"
+    },
+    "PostToolUseFailure": {
+        "Bash": "コマンドがしくじった",
+        "default": "{tool_name} がミスった"
+    },
+    "Stop": {"default": "ミッション達成"},
+    "Notification": {"default": "おーい、注目"},
+    "SubagentStart": {"default": "手下を派遣"},
+    "SubagentStop": {"default": "手下が帰還"},
+    "SessionStart": {"default": "行くぞ"},
+    "PreCompact": {"default": "記憶の整理整頓中"},
+    "ContextThreshold": {"default": "コンテキストが {threshold}% になった"}
+}

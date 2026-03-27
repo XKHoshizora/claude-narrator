@@ -1,0 +1,7 @@
+{
+  "owner": "hoshizora",
+  "description": "Hear what Claude Code is doing — TTS audio narration of work status via hooks",
+  "category": "accessibility",
+  "tags": ["tts", "audio", "narration", "hooks", "accessibility"],
+  "source": "./"
+}

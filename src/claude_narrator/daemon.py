@@ -12,6 +12,7 @@ from typing import Any
 from claude_narrator.config import CONFIG_DIR, load_config
 from claude_narrator.ipc import create_server
 from claude_narrator.ipc.base import IPCServer
+from claude_narrator.narration.coalescer import EventCoalescer
 from claude_narrator.narration.template import TemplateNarrator
 from claude_narrator.narration.verbosity import should_narrate
 from claude_narrator.player import AudioPlayer
@@ -70,6 +71,9 @@ class Daemon:
         self._queue = NarrationQueue(
             max_size=self._config["narration"]["max_queue_size"]
         )
+        self._coalescer = EventCoalescer(
+            window_seconds=2.0 if self._config["narration"]["skip_rapid_events"] else 0.0
+        )
         self._engine: TTSEngine | None = None
         self._player: AudioPlayer | None = None
         self._server: IPCServer | None = None
@@ -118,7 +122,7 @@ class Daemon:
         self._pid_mgr.cleanup()
 
     async def _event_loop(self) -> None:
-        """Receive events from IPC, queue narration items, and play them."""
+        """Receive events from IPC, coalesce, queue narration items, and play them."""
         assert self._server is not None
         async for event in self._server.events():
             if not self._config["general"]["enabled"]:
@@ -129,12 +133,19 @@ class Daemon:
             if not should_narrate(event_name, tool_name, self._config["general"]["verbosity"]):
                 continue
 
-            text = self._narrator.narrate(event)
+            # Coalesce rapid events
+            coalesced = self._coalescer.process(event)
+            if coalesced is None:
+                continue
+
+            text = self._narrator.narrate(coalesced)
             if text is None:
                 continue
 
-            priority = EVENT_PRIORITY.get(event_name, Priority.LOW)
-            item = NarrationItem(text=text, priority=priority, event=event)
+            priority = EVENT_PRIORITY.get(
+                coalesced.get("hook_event_name", ""), Priority.LOW
+            )
+            item = NarrationItem(text=text, priority=priority, event=coalesced)
             await self._queue.put(item)
 
             # If high priority, interrupt current playback
@@ -156,7 +167,7 @@ class Daemon:
             await self._tts_and_play(item.text)
 
     async def _tts_and_play(self, text: str) -> None:
-        """Synthesize and play a narration text."""
+        """Synthesize and play a narration text with interrupt support."""
         if not self._engine or not self._player:
             return
         try:
@@ -164,7 +175,12 @@ class Daemon:
                 text, language=self._config["general"]["language"]
             )
             await self._player.play(audio)
-            await self._player.wait_until_done()
+            # Wait for playback, but check for high-priority interrupts
+            while self._player.is_playing:
+                if self._queue.has_interrupt:
+                    await self._player.stop()
+                    break
+                await asyncio.sleep(0.1)
         except Exception as e:
             logger.error("TTS/playback error: %s", e)
 

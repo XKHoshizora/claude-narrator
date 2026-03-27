@@ -13,6 +13,7 @@ from claude_narrator.config import CONFIG_DIR, load_config
 from claude_narrator.ipc import create_server
 from claude_narrator.ipc.base import IPCServer
 from claude_narrator.narration.coalescer import EventCoalescer
+from claude_narrator.narration.filters import apply_filters
 from claude_narrator.narration.template import TemplateNarrator
 from claude_narrator.narration.verbosity import should_narrate
 from claude_narrator.player import AudioPlayer
@@ -141,6 +142,13 @@ class Daemon:
             tool_name = event.get("tool_name")
             if not should_narrate(event_name, tool_name, self._config["general"]["verbosity"]):
                 continue
+
+            # Apply custom filters
+            filters = self._config.get("filters", {})
+            if filters:
+                allowed, verbosity_override = apply_filters(event, filters)
+                if not allowed:
+                    continue
 
             # Coalesce rapid events
             coalesced = self._coalescer.process(event)

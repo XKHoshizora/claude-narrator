@@ -129,6 +129,24 @@ def uninstall() -> None:
 
 
 @main.command()
+def reload() -> None:
+    """Hot-reload config without restarting the daemon."""
+    pid_mgr = PIDManager(CONFIG_DIR / "daemon.pid")
+    pid = pid_mgr.read()
+    if pid is None or not pid_mgr.is_running():
+        click.echo("Daemon is not running.")
+        return
+
+    try:
+        os.kill(pid, signal.SIGHUP)
+        click.echo(f"Reload signal sent to daemon (PID {pid})")
+    except ProcessLookupError:
+        click.echo("Daemon process not found.")
+    except OSError as e:
+        click.echo(f"Failed to send reload signal: {e}")
+
+
+@main.command()
 def status() -> None:
     """Show daemon status."""
     pid_mgr = PIDManager(CONFIG_DIR / "daemon.pid")

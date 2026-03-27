@@ -20,6 +20,10 @@ Use AskUserQuestion to ask what the user wants to configure:
 - TTS engine
 - Language
 - Enable/disable narrator
+- Custom filters (ignore specific tools)
+- Sound effects (enable/disable)
+- Web UI (enable/disable)
+- Narration mode (template/llm)
 
 ## Step 3: Apply changes
 
@@ -31,6 +35,10 @@ claude-narrator config set general.verbosity verbose
 claude-narrator config set tts.engine say
 claude-narrator config set general.language zh
 claude-narrator config set general.enabled false
+claude-narrator config set filters.ignore_tools '["Glob","Grep"]'
+claude-narrator config set sounds.enabled true
+claude-narrator config set web.enabled true
+claude-narrator config set narration.mode llm
 ```
 
 ## Step 4: Restart daemon

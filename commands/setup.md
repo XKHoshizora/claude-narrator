@@ -88,3 +88,24 @@ Key commands to remember:
 - `claude-narrator stop` — Stop narration
 - `claude-narrator status` — Check status
 - `/claude-narrator:configure` — Change settings
+
+## Optional: Sound Effects
+
+Ask the user if they want to enable sound effects using AskUserQuestion (options: Yes, No).
+
+If yes:
+```bash
+claude-narrator config set sounds.enabled true
+```
+
+## Optional: Web UI
+
+Ask if they want to enable the web monitoring dashboard (options: Yes, No).
+
+If yes:
+```bash
+claude-narrator config set web.enabled true
+claude-narrator restart
+```
+
+Tell the user the dashboard is available at http://127.0.0.1:19822.

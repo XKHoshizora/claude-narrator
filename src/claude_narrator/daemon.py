@@ -13,6 +13,7 @@ from claude_narrator.config import CONFIG_DIR, load_config
 from claude_narrator.ipc import create_server
 from claude_narrator.ipc.base import IPCServer
 from claude_narrator.narration.coalescer import EventCoalescer
+from claude_narrator.narration.filters import apply_filters
 from claude_narrator.narration.template import TemplateNarrator
 from claude_narrator.narration.verbosity import should_narrate
 from claude_narrator.player import AudioPlayer
@@ -65,9 +66,18 @@ class Daemon:
         self._config_dir = config_dir or CONFIG_DIR
         self._config = config or load_config(self._config_dir)
         self._pid_mgr = PIDManager(self._config_dir / "daemon.pid")
-        self._narrator = TemplateNarrator(
-            language=self._config["general"]["language"]
-        )
+        if self._config["narration"]["mode"] == "llm":
+            from claude_narrator.narration.llm import LLMNarrator
+            llm_cfg = self._config["narration"].get("llm", {})
+            self._narrator = LLMNarrator(
+                provider=llm_cfg.get("provider", "ollama"),
+                model=llm_cfg.get("model", "qwen2.5:3b"),
+                language=self._config["general"]["language"],
+            )
+        else:
+            self._narrator = TemplateNarrator(
+                language=self._config["general"]["language"]
+            )
         self._queue = NarrationQueue(
             max_size=self._config["narration"]["max_queue_size"]
         )
@@ -133,12 +143,22 @@ class Daemon:
             if not should_narrate(event_name, tool_name, self._config["general"]["verbosity"]):
                 continue
 
+            # Apply custom filters
+            filters = self._config.get("filters", {})
+            if filters:
+                allowed, verbosity_override = apply_filters(event, filters)
+                if not allowed:
+                    continue
+
             # Coalesce rapid events
             coalesced = self._coalescer.process(event)
             if coalesced is None:
                 continue
 
-            text = self._narrator.narrate(coalesced)
+            if hasattr(self._narrator, "narrate_async"):
+                text = await self._narrator.narrate_async(coalesced)
+            else:
+                text = self._narrator.narrate(coalesced)
             if text is None:
                 continue
 

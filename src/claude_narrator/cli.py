@@ -31,7 +31,8 @@ def main() -> None:
 
 @main.command()
 @click.option("--foreground", "-f", is_flag=True, help="Run in foreground (don't daemonize)")
-def start(foreground: bool) -> None:
+@click.option("--web", is_flag=True, help="Enable web UI dashboard")
+def start(foreground: bool, web: bool) -> None:
     """Start the TTS narration daemon."""
     pid_mgr = PIDManager(CONFIG_DIR / "daemon.pid")
     if pid_mgr.is_running():
@@ -41,6 +42,8 @@ def start(foreground: bool) -> None:
     CONFIG_DIR.mkdir(parents=True, exist_ok=True)
 
     if foreground:
+        if web:
+            click.echo("Web UI will be available (configure via config set web.enabled true)")
         click.echo("Starting daemon in foreground...")
         run_daemon(foreground=True)
     else:

@@ -407,6 +407,7 @@ flowchart LR
 | `claude-narrator start` | 启动 daemon（可 `--foreground` 前台运行） |
 | `claude-narrator stop` | 停止 daemon |
 | `claude-narrator restart` | 重启 daemon |
+| `claude-narrator reload` | 热重载配置（不重启 daemon，通过 SIGHUP 信号触发） |
 | `claude-narrator status` | 显示状态（运行状态、引擎、队列长度） |
 | `claude-narrator test "text"` | 测试播放指定文本 |
 | `claude-narrator install` | 注入 hooks 到 settings.json |

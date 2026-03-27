@@ -1,0 +1,29 @@
+{
+    "PreToolUse": {
+        "Read": "正在读取 {file_path}",
+        "Write": "准备写入 {file_path}",
+        "Edit": "准备编辑 {file_path}",
+        "Bash": "执行命令",
+        "Glob": "搜索文件",
+        "Grep": "搜索内容",
+        "Agent": "启动代理",
+        "default": "调用 {tool_name}"
+    },
+    "PostToolUse": {
+        "Read": "读取完成",
+        "Write": "写入完成",
+        "Edit": "编辑完成",
+        "Bash": "命令完成",
+        "default": "{tool_name} 完成"
+    },
+    "PostToolUseFailure": {
+        "Bash": "命令失败",
+        "default": "{tool_name} 失败"
+    },
+    "Stop": { "default": "任务完成" },
+    "Notification": { "default": "需要你的注意" },
+    "SubagentStart": { "default": "启动子任务" },
+    "SubagentStop": { "default": "子任务完成" },
+    "SessionStart": { "default": "会话开始" },
+    "PreCompact": { "default": "上下文压缩中" }
+}

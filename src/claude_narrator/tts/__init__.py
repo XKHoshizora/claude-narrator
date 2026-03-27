@@ -17,5 +17,22 @@ def create_engine(config: dict[str, Any]) -> TTSEngine:
     if engine_name == "edge-tts":
         return EdgeTTSEngine(voice=voice)
 
-    # Fallback to edge-tts for unknown engines
+    if engine_name == "say":
+        from claude_narrator.tts.macos_say import MacOSSayEngine
+        return MacOSSayEngine(voice=voice)
+
+    if engine_name == "espeak":
+        from claude_narrator.tts.espeak import EspeakEngine
+        return EspeakEngine(voice=voice)
+
+    if engine_name == "openai":
+        from claude_narrator.tts.openai_tts import OpenAITTSEngine
+        openai_cfg = tts_config.get("openai", {})
+        return OpenAITTSEngine(
+            voice=openai_cfg.get("voice", "nova"),
+            model=openai_cfg.get("model", "tts-1"),
+            api_key_env=openai_cfg.get("api_key_env", "OPENAI_API_KEY"),
+        )
+
+    # Fallback
     return EdgeTTSEngine(voice=voice)

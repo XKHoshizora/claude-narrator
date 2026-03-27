@@ -1,0 +1,18 @@
+{
+  "name": "claude-narrator",
+  "description": "TTS audio narration for Claude Code — hear what Claude is doing",
+  "version": "0.1.0",
+  "author": {
+    "name": "hoshizora",
+    "url": "https://github.com/XKHoshizora"
+  },
+  "commands": [
+    "./commands/setup.md",
+    "./commands/configure.md",
+    "./commands/status.md"
+  ],
+  "homepage": "https://github.com/XKHoshizora/claude-narrator",
+  "repository": "https://github.com/XKHoshizora/claude-narrator",
+  "license": "MIT",
+  "keywords": ["tts", "narration", "audio", "hooks", "accessibility"]
+}

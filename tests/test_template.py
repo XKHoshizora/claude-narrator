@@ -77,3 +77,20 @@ class TestTemplateNarrator:
         }
         result = narrator.narrate(event)
         assert "file.py" in result
+
+
+class TestMultiLanguage:
+    def test_chinese_narrator(self):
+        narrator = TemplateNarrator(language="zh")
+        event = {"hook_event_name": "Stop"}
+        assert narrator.narrate(event) == "任务完成"
+
+    def test_japanese_narrator(self):
+        narrator = TemplateNarrator(language="ja")
+        event = {"hook_event_name": "Stop"}
+        assert narrator.narrate(event) == "タスク完了"
+
+    def test_fallback_to_english(self):
+        narrator = TemplateNarrator(language="xx")
+        event = {"hook_event_name": "Stop"}
+        assert narrator.narrate(event) == "Task complete"

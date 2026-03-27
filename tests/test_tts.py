@@ -38,3 +38,20 @@ class TestEngineFactory:
     def test_unknown_engine_falls_back_to_edge(self):
         engine = create_engine({"tts": {"engine": "nonexistent", "voice": "en-US-AriaNeural"}})
         assert isinstance(engine, EdgeTTSEngine)
+
+
+class TestEngineFactoryAllEngines:
+    def test_create_say_engine(self):
+        from claude_narrator.tts.macos_say import MacOSSayEngine
+        engine = create_engine({"tts": {"engine": "say", "voice": "Samantha"}})
+        assert isinstance(engine, MacOSSayEngine)
+
+    def test_create_espeak_engine(self):
+        from claude_narrator.tts.espeak import EspeakEngine
+        engine = create_engine({"tts": {"engine": "espeak", "voice": "en"}})
+        assert isinstance(engine, EspeakEngine)
+
+    def test_create_openai_engine(self):
+        from claude_narrator.tts.openai_tts import OpenAITTSEngine
+        engine = create_engine({"tts": {"engine": "openai", "voice": "nova", "openai": {"voice": "nova", "model": "tts-1"}}})
+        assert isinstance(engine, OpenAITTSEngine)

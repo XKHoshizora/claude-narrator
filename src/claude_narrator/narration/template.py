@@ -73,6 +73,11 @@ class TemplateNarrator:
 
         variables = _extract_variables(event)
         try:
+            # Handle coalesced events
+            if event.get("_coalesced_count", 1) > 1:
+                count = event["_coalesced_count"]
+                tool = event.get("tool_name", "operations")
+                return f"{count} {tool} operations"
             return template.format_map(variables)
         except KeyError:
             return template  # Return template as-is if variables missing

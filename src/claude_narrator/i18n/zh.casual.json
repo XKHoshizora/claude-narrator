@@ -1,0 +1,33 @@
+{
+    "_meta": {"name": "casual", "description": "轻松口语播报风格"},
+    "_prefixes": [],
+    "_suffixes": [],
+    "PreToolUse": {
+        "Read": "看看 {file_path}",
+        "Write": "写个 {file_path}",
+        "Edit": "改改 {file_path}",
+        "Bash": "跑个命令",
+        "Glob": "找找文件",
+        "Grep": "搜搜代码",
+        "Agent": "叫个帮手",
+        "default": "用一下 {tool_name}"
+    },
+    "PostToolUse": {
+        "Read": "好了，{file_path} 看完了",
+        "Write": "搞定，{file_path} 存好了",
+        "Edit": "行，{file_path} 改好了",
+        "Bash": "命令跑完了",
+        "default": "{tool_name} 好了"
+    },
+    "PostToolUseFailure": {
+        "Bash": "哎呀，命令出错了",
+        "default": "嗯，{tool_name} 出了点问题"
+    },
+    "Stop": {"default": "搞定收工"},
+    "Notification": {"default": "看一下这里"},
+    "SubagentStart": {"default": "开个小任务"},
+    "SubagentStop": {"default": "小任务完成了"},
+    "SessionStart": {"default": "开始干活"},
+    "PreCompact": {"default": "脑子快满了，清理一下"},
+    "ContextThreshold": {"default": "注意，上下文已经 {threshold}% 了"}
+}

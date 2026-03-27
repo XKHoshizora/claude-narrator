@@ -1,0 +1,33 @@
+{
+    "_meta": {"name": "tengu", "description": "Whimsical Anthropic-style narration with spinner words"},
+    "_prefixes": [],
+    "_suffixes": [],
+    "PreToolUse": {
+        "Read": "diving into {file_path}",
+        "Write": "conjuring up {file_path}",
+        "Edit": "tinkering with {file_path}",
+        "Bash": "unleashing a command",
+        "Glob": "spelunking for files",
+        "Grep": "hunting through the code",
+        "Agent": "summoning a helper",
+        "default": "wielding {tool_name}"
+    },
+    "PostToolUse": {
+        "Read": "absorbed {file_path}",
+        "Write": "manifested {file_path}",
+        "Edit": "reshaped {file_path}",
+        "Bash": "command vanquished",
+        "default": "{tool_name} conquered"
+    },
+    "PostToolUseFailure": {
+        "Bash": "command went sideways",
+        "default": "{tool_name} fumbled"
+    },
+    "Stop": {"default": "mission accomplished"},
+    "Notification": {"default": "hey, need your attention"},
+    "SubagentStart": {"default": "dispatching a minion"},
+    "SubagentStop": {"default": "minion reported back"},
+    "SessionStart": {"default": "let's roll"},
+    "PreCompact": {"default": "tidying up the memory banks"},
+    "ContextThreshold": {"default": "context is {threshold} percent full"}
+}

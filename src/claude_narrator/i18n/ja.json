@@ -25,5 +25,6 @@
     "SubagentStart": { "default": "サブタスク開始" },
     "SubagentStop": { "default": "サブタスク完了" },
     "SessionStart": { "default": "セッション開始" },
-    "PreCompact": { "default": "コンテキスト圧縮中" }
+    "PreCompact": { "default": "コンテキスト圧縮中" },
+    "ContextThreshold": {"default": "コンテキスト {threshold}% 使用中"}
 }

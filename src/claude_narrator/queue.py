@@ -20,6 +20,7 @@ EVENT_PRIORITY: dict[str, Priority] = {
     "Notification": Priority.HIGH,
     "PostToolUseFailure": Priority.HIGH,
     "Stop": Priority.MEDIUM,
+    "ContextThreshold": Priority.MEDIUM,
     "SubagentStart": Priority.MEDIUM,
     "SubagentStop": Priority.MEDIUM,
     "SessionStart": Priority.MEDIUM,

@@ -207,3 +207,26 @@ class TemplateNarrator:
         if suffix:
             parts.append(suffix)
         return " ".join(parts)
+
+
+TENGU_GITHUB_URL = "https://raw.githubusercontent.com/levindixon/tengu_spinner_words/main/known-processing-words.json"
+
+
+async def update_tengu_words(config_dir: Path) -> None:
+    """Fetch latest tengu words from GitHub and cache locally. Silent on failure."""
+    try:
+        import httpx
+    except ImportError:
+        return
+    try:
+        async with httpx.AsyncClient() as client:
+            resp = await client.get(TENGU_GITHUB_URL, timeout=5.0)
+            resp.raise_for_status()
+            words = resp.json()
+            if isinstance(words, list) and len(words) >= 10:
+                config_dir.mkdir(parents=True, exist_ok=True)
+                cache_file = config_dir / "tengu_words.json"
+                cache_file.write_text(json.dumps(words, indent=2), encoding="utf-8")
+                logger.info("Updated tengu words cache (%d words)", len(words))
+    except Exception as e:
+        logger.debug("Failed to update tengu words: %s", e)

@@ -74,10 +74,12 @@ class Daemon:
                 provider=llm_cfg.get("provider", "ollama"),
                 model=llm_cfg.get("model", "qwen2.5:3b"),
                 language=self._config["general"]["language"],
+                personality=self._config["narration"].get("personality", "concise"),
             )
         else:
             self._narrator = TemplateNarrator(
-                language=self._config["general"]["language"]
+                language=self._config["general"]["language"],
+                personality=self._config["narration"].get("personality", "concise"),
             )
         self._queue = NarrationQueue(
             max_size=self._config["narration"]["max_queue_size"]
@@ -113,6 +115,11 @@ class Daemon:
             loop = asyncio.get_running_loop()
             loop.add_signal_handler(signal.SIGHUP, self.reload_config)
 
+        # Tengu words auto-update
+        if self._config["narration"].get("tengu_prefix_auto_update", False):
+            from claude_narrator.narration.template import update_tengu_words
+            await update_tengu_words(self._config_dir)
+
         try:
             await self._server.start()
             await asyncio.gather(
@@ -145,10 +152,12 @@ class Daemon:
                 provider=llm_cfg.get("provider", "ollama"),
                 model=llm_cfg.get("model", "qwen2.5:3b"),
                 language=self._config["general"]["language"],
+                personality=self._config["narration"].get("personality", "concise"),
             )
         else:
             self._narrator = TemplateNarrator(
-                language=self._config["general"]["language"]
+                language=self._config["general"]["language"],
+                personality=self._config["narration"].get("personality", "concise"),
             )
 
         # Rebuild coalescer

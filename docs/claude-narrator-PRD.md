@@ -114,33 +114,36 @@ Claude Code
    - Claude Code 的 Hook 生态大量使用 Python
    - asyncio 天然适合处理 TTS 队列
 
-3. **配置文件**: 使用 `~/.claude-narrator/config.toml` 或 `config.yaml`
+3. **配置文件**: 使用 `~/.claude-narrator/config.json`
 
 ### 3.3 配置文件示例
 
-```toml
-[general]
-verbosity = "normal"      # minimal | normal | verbose
-language = "en"           # en | zh | ja
-enabled = true
-
-[tts]
-engine = "edge-tts"       # edge-tts | say | espeak | openai
-voice = "en-US-AriaNeural"      # engine-specific voice name (English default)
-
-[tts.openai]              # only when engine = openai
-api_key_env = "OPENAI_API_KEY"
-model = "tts-1"
-voice = "nova"
-
-[narration]
-mode = "template"         # template | llm
-max_queue_size = 5        # max queue length, older messages are dropped
-skip_rapid_events = true  # summarize when many identical events fire rapidly
-
-[narration.llm]           # only when mode = llm
-provider = "ollama"       # ollama | openai | anthropic
-model = "qwen2.5:3b"
+```json
+{
+  "general": {
+    "verbosity": "normal",
+    "language": "en",
+    "enabled": true
+  },
+  "tts": {
+    "engine": "edge-tts",
+    "voice": "en-US-AriaNeural",
+    "openai": {
+      "api_key_env": "OPENAI_API_KEY",
+      "model": "tts-1",
+      "voice": "nova"
+    }
+  },
+  "narration": {
+    "mode": "template",
+    "max_queue_size": 5,
+    "skip_rapid_events": true,
+    "llm": {
+      "provider": "ollama",
+      "model": "qwen2.5:3b"
+    }
+  }
+}
 ```
 
 ---
@@ -213,9 +216,9 @@ claude-narrator/
 │       │   ├── espeak.py       # espeak/piper
 │       │   └── openai_tts.py   # OpenAI TTS
 │       └── i18n/               # Multilingual narration templates
-│           ├── en.toml         # English (default)
-│           ├── zh.toml         # Chinese
-│           └── ja.toml         # Japanese
+│           ├── en.json         # English (default)
+│           ├── zh.json         # Chinese
+│           └── ja.json         # Japanese
 ├── tests/
 │   ├── test_narration.py
 │   ├── test_tts_engines.py
@@ -232,136 +235,145 @@ claude-narrator/
 
 ## 6. 多语言播报模板示例
 
-### English (en.toml) — 默认语言
+### English (en.json) — 默认语言
 
-```toml
-[PreToolUse]
-Read = "Reading {file_path}"
-Write = "Writing to {file_path}"
-Edit = "Editing {file_path}"
-Bash = "Running: {command_short}"
-Glob = "Searching files: {pattern}"
-Grep = "Searching for: {query}"
-default = "Using tool: {tool_name}"
-
-[PostToolUse]
-Read = "Finished reading {file_path}"
-Write = "Finished writing {file_path}"
-Edit = "Finished editing {file_path}"
-Bash = "Command complete"
-default = "{tool_name} done"
-
-[PostToolUseFailure]
-Bash = "Command failed"
-default = "{tool_name} failed"
-
-[Stop]
-default = "Task complete"
-
-[Notification]
-permission_prompt = "Permission needed"
-idle_prompt = "Waiting for your input"
-default = "{message}"
-
-[SubagentStart]
-default = "Starting subtask: {agent_type}"
-
-[SubagentStop]
-default = "Subtask complete"
-
-[SessionStart]
-default = "Session started"
-
-[PreCompact]
-default = "Compacting context"
+```json
+{
+  "PreToolUse": {
+    "Read": "Reading {file_path}",
+    "Write": "Writing to {file_path}",
+    "Edit": "Editing {file_path}",
+    "Bash": "Running: {command_short}",
+    "Glob": "Searching files: {pattern}",
+    "Grep": "Searching for: {query}",
+    "default": "Using tool: {tool_name}"
+  },
+  "PostToolUse": {
+    "Read": "Finished reading {file_path}",
+    "Write": "Finished writing {file_path}",
+    "Edit": "Finished editing {file_path}",
+    "Bash": "Command complete",
+    "default": "{tool_name} done"
+  },
+  "PostToolUseFailure": {
+    "Bash": "Command failed",
+    "default": "{tool_name} failed"
+  },
+  "Stop": {
+    "default": "Task complete"
+  },
+  "Notification": {
+    "permission_prompt": "Permission needed",
+    "idle_prompt": "Waiting for your input",
+    "default": "{message}"
+  },
+  "SubagentStart": {
+    "default": "Starting subtask: {agent_type}"
+  },
+  "SubagentStop": {
+    "default": "Subtask complete"
+  },
+  "SessionStart": {
+    "default": "Session started"
+  },
+  "PreCompact": {
+    "default": "Compacting context"
+  }
+}
 ```
 
-### 中文 (zh.toml)
+### 中文 (zh.json)
 
-```toml
-[PreToolUse]
-Read = "正在读取 {file_path}"
-Write = "准备写入 {file_path}"
-Edit = "准备编辑 {file_path}"
-Bash = "执行命令: {command_short}"
-Glob = "搜索文件: {pattern}"
-Grep = "搜索内容: {query}"
-default = "调用工具: {tool_name}"
-
-[PostToolUse]
-Read = "{file_path} 读取完成"
-Write = "{file_path} 写入完成"
-Edit = "{file_path} 修改完成"
-Bash = "命令执行完成"
-default = "{tool_name} 完成"
-
-[PostToolUseFailure]
-Bash = "命令执行失败"
-default = "{tool_name} 执行失败"
-
-[Stop]
-default = "任务完成了"
-
-[Notification]
-permission_prompt = "需要你确认权限"
-idle_prompt = "在等你操作"
-default = "{message}"
-
-[SubagentStart]
-default = "启动子任务: {agent_type}"
-
-[SubagentStop]
-default = "子任务完成"
-
-[SessionStart]
-default = "会话已启动"
-
-[PreCompact]
-default = "上下文准备压缩"
+```json
+{
+  "PreToolUse": {
+    "Read": "正在读取 {file_path}",
+    "Write": "准备写入 {file_path}",
+    "Edit": "准备编辑 {file_path}",
+    "Bash": "执行命令: {command_short}",
+    "Glob": "搜索文件: {pattern}",
+    "Grep": "搜索内容: {query}",
+    "default": "调用工具: {tool_name}"
+  },
+  "PostToolUse": {
+    "Read": "{file_path} 读取完成",
+    "Write": "{file_path} 写入完成",
+    "Edit": "{file_path} 修改完成",
+    "Bash": "命令执行完成",
+    "default": "{tool_name} 完成"
+  },
+  "PostToolUseFailure": {
+    "Bash": "命令执行失败",
+    "default": "{tool_name} 执行失败"
+  },
+  "Stop": {
+    "default": "任务完成了"
+  },
+  "Notification": {
+    "permission_prompt": "需要你确认权限",
+    "idle_prompt": "在等你操作",
+    "default": "{message}"
+  },
+  "SubagentStart": {
+    "default": "启动子任务: {agent_type}"
+  },
+  "SubagentStop": {
+    "default": "子任务完成"
+  },
+  "SessionStart": {
+    "default": "会话已启动"
+  },
+  "PreCompact": {
+    "default": "上下文准备压缩"
+  }
+}
 ```
 
-### 日本語 (ja.toml)
+### 日本語 (ja.json)
 
-```toml
-[PreToolUse]
-Read = "{file_path} を読み込み中"
-Write = "{file_path} に書き込み中"
-Edit = "{file_path} を編集中"
-Bash = "コマンド実行: {command_short}"
-Glob = "ファイル検索: {pattern}"
-Grep = "検索中: {query}"
-default = "ツール使用: {tool_name}"
-
-[PostToolUse]
-Read = "{file_path} 読み込み完了"
-Write = "{file_path} 書き込み完了"
-Edit = "{file_path} 編集完了"
-Bash = "コマンド完了"
-default = "{tool_name} 完了"
-
-[PostToolUseFailure]
-Bash = "コマンド失敗"
-default = "{tool_name} 失敗"
-
-[Stop]
-default = "タスク完了"
-
-[Notification]
-permission_prompt = "権限の確認が必要です"
-idle_prompt = "入力を待っています"
-default = "{message}"
-
-[SubagentStart]
-default = "サブタスク開始: {agent_type}"
-
-[SubagentStop]
-default = "サブタスク完了"
-
-[SessionStart]
-default = "セッション開始"
-
-[PreCompact]
-default = "コンテキスト圧縮中"
+```json
+{
+  "PreToolUse": {
+    "Read": "{file_path} を読み込み中",
+    "Write": "{file_path} に書き込み中",
+    "Edit": "{file_path} を編集中",
+    "Bash": "コマンド実行: {command_short}",
+    "Glob": "ファイル検索: {pattern}",
+    "Grep": "検索中: {query}",
+    "default": "ツール使用: {tool_name}"
+  },
+  "PostToolUse": {
+    "Read": "{file_path} 読み込み完了",
+    "Write": "{file_path} 書き込み完了",
+    "Edit": "{file_path} 編集完了",
+    "Bash": "コマンド完了",
+    "default": "{tool_name} 完了"
+  },
+  "PostToolUseFailure": {
+    "Bash": "コマンド失敗",
+    "default": "{tool_name} 失敗"
+  },
+  "Stop": {
+    "default": "タスク完了"
+  },
+  "Notification": {
+    "permission_prompt": "権限の確認が必要です",
+    "idle_prompt": "入力を待っています",
+    "default": "{message}"
+  },
+  "SubagentStart": {
+    "default": "サブタスク開始: {agent_type}"
+  },
+  "SubagentStop": {
+    "default": "サブタスク完了"
+  },
+  "SessionStart": {
+    "default": "セッション開始"
+  },
+  "PreCompact": {
+    "default": "コンテキスト圧縮中"
+  }
+}
 ```
 
 ---

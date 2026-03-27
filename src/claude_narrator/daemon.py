@@ -122,10 +122,21 @@ class Daemon:
 
         try:
             await self._server.start()
-            await asyncio.gather(
+            tasks = [
                 self._event_loop(),
                 self._playback_loop(),
-            )
+            ]
+            # Optional context monitor
+            if self._config.get("context_monitor", {}).get("enabled", False):
+                from claude_narrator.context_monitor import ContextMonitorCoroutine
+                self._context_monitor = ContextMonitorCoroutine(
+                    config_dir=self._config_dir,
+                    thresholds=self._config["context_monitor"].get("thresholds", [50, 70, 85, 95]),
+                    narrator=self._narrator,
+                    queue=self._queue,
+                )
+                tasks.append(self._context_monitor.run())
+            await asyncio.gather(*tasks)
         except asyncio.CancelledError:
             pass
         finally:

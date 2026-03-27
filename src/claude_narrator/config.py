@@ -50,6 +50,11 @@ DEFAULT_CONFIG: dict[str, Any] = {
         "only_tools": None,
         "custom_rules": [],
     },
+    "web": {
+        "enabled": False,
+        "host": "127.0.0.1",
+        "port": 19822,
+    },
 }
 
 

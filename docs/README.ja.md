@@ -138,6 +138,22 @@ flowchart LR
 | 中文 | `zh` | zh-CN-XiaoxiaoNeural |
 | 日本語 | `ja` | ja-JP-NanamiNeural |
 
+### ナレーション性格 (Personality)
+
+ナレーションスタイルを設定：
+
+```bash
+claude-narrator config set narration.personality tengu
+claude-narrator reload
+```
+
+| 性格 | スタイル | 例 |
+|------|---------|-----|
+| `concise`（デフォルト） | 簡潔 | "app.py を読み込み中" |
+| `tengu` | 遊び心 + spinner | "Cogitating... app.py に潜入" |
+| `professional` | フォーマル | "ソースファイル app.py を読み取り中" |
+| `casual` | カジュアル | "app.py を見てみる" |
+
 ### ナレーションモード
 
 - **テンプレートモード**（デフォルト）：高速で決定的。i18n JSON テンプレートから「src/app.py を読み込み中」のような短文を生成。
@@ -196,6 +212,17 @@ claude-narrator config set web.enabled true
 claude-narrator restart
 # http://127.0.0.1:19822 を開く
 ```
+
+### コンテキストモニター
+
+トークン使用率が閾値に達した時に音声でお知らせ：
+
+```bash
+claude-narrator config set context_monitor.enabled true
+claude-narrator reload
+```
+
+> **警告**：この機能は Claude Code の statusline スロットを使用します。claude-hud などの statusline プラグインと競合します。
 
 ## 動作要件
 

@@ -2,6 +2,21 @@
 
 All notable changes to Claude Narrator will be documented in this file.
 
+## [0.2.0] - 2026-03-27
+
+### Personality System
+- 4 built-in narration personalities: concise, tengu, professional, casual
+- Three-slot composition (prefix/body/suffix) with multi-personality layering
+- 90 Tengu spinner words from Anthropic's vocabulary
+- Optional auto-update of tengu words from GitHub (`tengu_prefix_auto_update`)
+- Multi-language support (en/zh/ja) for all personalities
+
+### Context Monitor
+- Optional statusline bridge for context window utilization tracking
+- Threshold-based voice announcements (configurable, default: 50%, 70%, 85%, 95%)
+- New `ContextThreshold` event type with personality-aware templates
+- Warning: conflicts with claude-hud (only one statusline allowed)
+
 ## [0.1.0] - 2026-03-27
 
 ### Phase 1: MVP

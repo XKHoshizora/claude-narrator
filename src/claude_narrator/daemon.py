@@ -65,9 +65,18 @@ class Daemon:
         self._config_dir = config_dir or CONFIG_DIR
         self._config = config or load_config(self._config_dir)
         self._pid_mgr = PIDManager(self._config_dir / "daemon.pid")
-        self._narrator = TemplateNarrator(
-            language=self._config["general"]["language"]
-        )
+        if self._config["narration"]["mode"] == "llm":
+            from claude_narrator.narration.llm import LLMNarrator
+            llm_cfg = self._config["narration"].get("llm", {})
+            self._narrator = LLMNarrator(
+                provider=llm_cfg.get("provider", "ollama"),
+                model=llm_cfg.get("model", "qwen2.5:3b"),
+                language=self._config["general"]["language"],
+            )
+        else:
+            self._narrator = TemplateNarrator(
+                language=self._config["general"]["language"]
+            )
         self._queue = NarrationQueue(
             max_size=self._config["narration"]["max_queue_size"]
         )
@@ -138,7 +147,10 @@ class Daemon:
             if coalesced is None:
                 continue
 
-            text = self._narrator.narrate(coalesced)
+            if hasattr(self._narrator, "narrate_async"):
+                text = await self._narrator.narrate_async(coalesced)
+            else:
+                text = self._narrator.narrate(coalesced)
             if text is None:
                 continue
 

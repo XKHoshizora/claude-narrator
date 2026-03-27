@@ -35,3 +35,28 @@ class TestCLI:
     def test_uninstall_command_exists(self, runner):
         result = runner.invoke(main, ["uninstall", "--help"])
         assert result.exit_code == 0
+
+    def test_status_command(self, runner):
+        result = runner.invoke(main, ["status"])
+        assert result.exit_code == 0
+        assert "Status:" in result.output
+
+    def test_restart_command_exists(self, runner):
+        result = runner.invoke(main, ["restart", "--help"])
+        assert result.exit_code == 0
+
+    def test_config_get_help(self, runner):
+        result = runner.invoke(main, ["config", "get", "--help"])
+        assert result.exit_code == 0
+
+    def test_config_set_help(self, runner):
+        result = runner.invoke(main, ["config", "set", "--help"])
+        assert result.exit_code == 0
+
+    def test_config_reset_help(self, runner):
+        result = runner.invoke(main, ["config", "reset", "--help"])
+        assert result.exit_code == 0
+
+    def test_cache_clear_help(self, runner):
+        result = runner.invoke(main, ["cache", "clear", "--help"])
+        assert result.exit_code == 0

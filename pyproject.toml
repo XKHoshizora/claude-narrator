@@ -7,7 +7,7 @@ name = "claude-narrator"
 version = "0.1.0"
 description = "TTS audio narration for Claude Code - hear what Claude is doing"
 readme = "README.md"
-license = "MIT"
+license = "Apache-2.0"
 requires-python = ">=3.10"
 authors = [{ name = "hoshizora" }]
 keywords = ["claude-code", "tts", "narration", "hooks", "plugin"]

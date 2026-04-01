@@ -1,8 +1,10 @@
 # Personality 风格系统 & Token 监控 — 设计规格文档
 
+> **更新记录**: v0.4.0 中 Tengu 词库已从第三方 GitHub 的 90 词更新为 Claude Code 官方源码 `spinnerVerbs.ts` 的 187 词完整列表。异步 Hook 协议和 TTS 缓存集成也已在 v0.4.0 中实现。
+
 ## Context
 
-claude-narrator 的播报模板目前语言单调（"Reading app.py"、"Task complete"）。用户希望增加播报风格多样性，同时保留简洁选项。参考 Claude Code 内部代号 Tengu 的 90 个 spinner 词（Percolating、Cogitating 等）作为趣味风格之一。
+claude-narrator 的播报模板目前语言单调（"Reading app.py"、"Task complete"）。用户希望增加播报风格多样性，同时保留简洁选项。参考 Claude Code 内部代号 Tengu 的 spinner 词（Percolating、Cogitating 等共 187 个）作为趣味风格之一。
 
 此外，用户希望在 Token 使用量达到特定阈值时收到语音提醒。
 

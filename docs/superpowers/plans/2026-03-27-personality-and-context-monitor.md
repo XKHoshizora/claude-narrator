@@ -1,6 +1,6 @@
 # Personality System + Context Monitor Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **状态: 已完成** — v0.2.0 已发布。
 
 **Goal:** Add a personality-based narration system (concise/tengu/professional/casual) with three-slot composition (prefix/body/suffix) and layered multi-personality support, plus an optional context window utilization monitor.
 

@@ -60,10 +60,12 @@ flowchart LR
     TTS --> P[Audio Playback]
 ```
 
-- **Hook Script**: Lightweight forwarder — reads stdin JSON, sends to daemon, exits immediately. Never blocks Claude Code.
+- **Hook Script**: Lightweight forwarder — outputs `{"async": true}` so Claude Code continues immediately, then forwards stdin JSON to daemon in background. Zero blocking.
 - **Daemon**: asyncio-based background process handling all logic.
-- **Event Coalescer**: Merges rapid consecutive events (e.g., 5 Read calls → "5 Read operations").
+- **Tool Registry**: 42 tools registered with display names, categories, and response parsers for enriched narration.
+- **Event Coalescer**: Merges rapid consecutive events (e.g., 5 Read calls → "5 Read operations"). 0.5s window.
 - **Priority Queue**: HIGH (errors, notifications) interrupts current playback; LOW (tool calls) dropped when queue is full.
+- **Audio Cache**: LRU file-based cache integrated into TTS path — repeated phrases skip network requests.
 
 ## Configuration
 
@@ -117,9 +119,34 @@ Config file: `~/.claude-narrator/config.json`
 
 | Level | What gets narrated |
 |-------|-------------------|
-| `minimal` | Task completion, errors, permission prompts |
-| `normal` (default) | Above + file operations, subagent activity |
-| `verbose` | Everything |
+| `minimal` | Task completion, errors, permission prompts/denials, stop failures |
+| `normal` (default) | Above + file operations, subagent activity, session start/end, context compaction, task lifecycle |
+| `verbose` | Everything (including worktree operations, directory changes, file watch events) |
+
+### Supported Hook Events (20 of 27)
+
+| Event | Verbosity | Description |
+|-------|-----------|-------------|
+| `PreToolUse` | normal (file ops) | Before tool execution (40+ tools with display names via Tool Registry) |
+| `PostToolUse` | normal (file ops) | After tool completion (with result summaries for Bash/Grep/Glob/Read/WebSearch) |
+| `PostToolUseFailure` | minimal | Tool execution failed |
+| `Stop` | minimal | Agent completed response |
+| `StopFailure` | minimal | Agent failed to complete |
+| `Notification` | minimal | User attention needed (7 notification types: idle, permission, computer use, auth, etc.) |
+| `PermissionRequest` | minimal | Permission prompt waiting |
+| `PermissionDenied` | minimal | Tool permission blocked |
+| `SubagentStart` | normal | Subagent launched |
+| `SubagentStop` | normal | Subagent completed |
+| `SessionStart` | normal | Session begins (with source variant) |
+| `SessionEnd` | normal | Session ended |
+| `PreCompact` | verbose | Context compression starting |
+| `PostCompact` | normal | Context compression completed |
+| `TaskCreated` | normal | Team task delegated |
+| `TaskCompleted` | normal | Team task finished |
+| `WorktreeCreate` | verbose | Git worktree created |
+| `WorktreeRemove` | verbose | Git worktree removed |
+| `CwdChanged` | verbose | Working directory changed |
+| `FileChanged` | verbose | Watched file modified |
 
 ### TTS Engines
 

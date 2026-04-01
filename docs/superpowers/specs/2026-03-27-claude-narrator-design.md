@@ -1,5 +1,10 @@
 # Claude Narrator — 设计规格文档
 
+> **归档说明**: 本文档为 v0.1.0 MVP 的设计规格，已实施完毕。后续版本的设计变更：
+> - v0.2.0: 人格系统 + 上下文监控 → 见 `2026-03-27-personality-and-context-monitor-design.md`
+> - v0.3.0: Hook 事件扩展（9→20）→ 基于 Claude Code 源码分析的增量改进
+> - v0.4.0: 智能叙述增强 → 见 `2026-04-01-smart-narration-design.md`
+
 ## Context
 
 Claude Code 在执行任务时，用户如果不盯着终端就无法了解进度。这在长时间任务、多窗口并行、或离开座位时尤为痛苦。claude-narrator 通过 TTS 语音实时播报 Claude Code 的工作状态来解决这一问题，填补了 Claude Code 生态中语音播报的空白。

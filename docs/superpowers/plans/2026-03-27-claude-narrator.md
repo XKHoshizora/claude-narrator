@@ -1,6 +1,6 @@
 # Claude Narrator Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **状态: 已完成** — v0.1.0 MVP + v0.2.0 已发布。
 
 **Goal:** Build a TTS audio narration plugin for Claude Code that speaks work status in real-time via hooks.
 

@@ -1,5 +1,7 @@
 # Claude Narrator — 项目需求文档
 
+> **文档状态**: 本文档为 v0.1.0 MVP 阶段的原始需求文档。项目已发展到 **v0.4.0**，增加了人格系统、上下文监控、20 种 Hook 事件、Tool Registry（42 个工具）、Notification 类型解析、PostToolUse 结果摘要、异步 Hook 协议、TTS 缓存集成等功能。当前实现状态请参见 [CHANGELOG.md](../CHANGELOG.md) 和 [README.md](../README.md)。
+
 > **项目定位**: 一个开源的 Claude Code 插件，通过 TTS 语音实时播报 Claude Code 的工作状态，让开发者不用盯着终端也能知道 AI 在做什么。
 >
 > **差异化**: 现有生态中 statusline 类项目很多（claude-hud, ccstatusline, claude-dashboard 等），但 **TTS 语音播报** 方向几乎空白。本项目填补这一空缺。

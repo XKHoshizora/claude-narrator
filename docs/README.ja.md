@@ -60,10 +60,12 @@ flowchart LR
     TTS --> P[音声再生]
 ```
 
-- **Hook スクリプト**：軽量な転送処理。stdin JSON を読み取り → デーモンに送信 → 即座に終了。Claude Code をブロックしません。
+- **Hook スクリプト**：`{"async": true}` を出力してClaude Codeを即座に解放し、バックグラウンドでデーモンにイベントを転送。ゼロブロッキング。
 - **デーモン**：asyncio ベースのバックグラウンドプロセス。全ロジックを処理。
-- **イベント統合**：2 秒以内の同一ツールの連続呼び出しを 1 つにまとめます（例：5 回の Read → "5 Read operations"）。
+- **ツールレジストリ**：42個のツールに表示名、カテゴリ、レスポンスパーサーを登録し、差別化されたナレーションを提供。
+- **イベント統合**：0.5秒以内の同一ツールの連続呼び出しを1つにまとめます（例：5回のRead → "5 Read operations"）。
 - **優先度キュー**：高優先度（エラー、通知）は現在の再生を中断。低優先度（ツール呼び出し）はキュー満杯時に破棄。
+- **オーディオキャッシュ**：LRUファイルキャッシュをTTSパスに統合 — 繰り返しフレーズはネットワークリクエストをスキップ。
 
 ## 設定
 
@@ -117,9 +119,34 @@ flowchart LR
 
 | レベル | ナレーション対象 |
 |--------|-----------------|
-| `minimal` | タスク完了、エラー、権限要求 |
-| `normal`（デフォルト） | 上記 + ファイル操作、サブタスク |
-| `verbose` | すべてのイベント |
+| `minimal` | タスク完了、エラー、権限要求/拒否、停止失敗 |
+| `normal`（デフォルト） | 上記 + ファイル操作、サブタスク、セッション開始/終了、コンテキスト圧縮、タスクライフサイクル |
+| `verbose` | すべてのイベント（ワークツリー操作、ディレクトリ変更、ファイル監視含む） |
+
+### サポートされるHookイベント（20/27）
+
+| イベント | レベル | 説明 |
+|----------|--------|------|
+| `PreToolUse` | normal（ファイル操作） | ツール実行前（Tool Registryにより40+ツールの差別化ナレーション） |
+| `PostToolUse` | normal（ファイル操作） | ツール完了後（Bash/Grep/Glob/Read/WebSearchは結果サマリー付き） |
+| `PostToolUseFailure` | minimal | ツール実行失敗 |
+| `Stop` | minimal | タスク完了 |
+| `StopFailure` | minimal | タスク実行失敗 |
+| `Notification` | minimal | ユーザーの注意が必要（7種の通知タイプ：入力待ち、権限確認、コンピュータ操作モード等） |
+| `PermissionRequest` | minimal | 権限要求待ち |
+| `PermissionDenied` | minimal | 権限拒否 |
+| `SubagentStart` | normal | サブエージェント開始 |
+| `SubagentStop` | normal | サブエージェント完了 |
+| `SessionStart` | normal | セッション開始（startup/resume/clear/compact区分） |
+| `SessionEnd` | normal | セッション終了 |
+| `PreCompact` | verbose | コンテキスト圧縮開始 |
+| `PostCompact` | normal | コンテキスト圧縮完了 |
+| `TaskCreated` | normal | チームタスク作成 |
+| `TaskCompleted` | normal | チームタスク完了 |
+| `WorktreeCreate` | verbose | Gitワークツリー作成 |
+| `WorktreeRemove` | verbose | Gitワークツリー削除 |
+| `CwdChanged` | verbose | 作業ディレクトリ変更 |
+| `FileChanged` | verbose | ファイル変更検出 |
 
 ### TTS エンジン
 

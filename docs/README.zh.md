@@ -60,10 +60,12 @@ flowchart LR
     TTS --> P[语音播放]
 ```
 
-- **Hook 脚本**：轻量转发器，读取 stdin JSON → 发送到 Daemon → 立即退出，不阻塞 Claude Code。
+- **Hook 脚本**：输出 `{"async": true}` 让 Claude Code 立即继续，然后在后台转发事件到 Daemon。零阻塞。
 - **Daemon**：基于 asyncio 的后台进程，处理所有逻辑。
-- **事件合并**：2 秒窗口内相同工具的连续调用合并为一条（如 5 次 Read → "5 Read operations"）。
+- **工具注册表**：42 个工具注册了显示名、分类和结果解析器，提供差异化叙述。
+- **事件合并**：0.5 秒窗口内相同工具的连续调用合并为一条（如 5 次 Read → "5 Read operations"）。
 - **优先级队列**：高优先级（错误、通知）打断当前播放；低优先级（工具调用）队列满时丢弃。
+- **音频缓存**：LRU 文件缓存集成到 TTS 路径——重复短语跳过网络请求。
 
 ## 配置
 
@@ -117,9 +119,34 @@ flowchart LR
 
 | 等级 | 播报内容 |
 |------|---------|
-| `minimal` | 任务完成、错误、权限请求 |
-| `normal`（默认） | 以上 + 文件操作、子任务 |
-| `verbose` | 所有事件 |
+| `minimal` | 任务完成、错误、权限请求/拒绝、停止失败 |
+| `normal`（默认） | 以上 + 文件操作、子任务、会话开始/结束、上下文压缩、任务生命周期 |
+| `verbose` | 所有事件（含工作树操作、目录切换、文件监听）|
+
+### 支持的 Hook 事件（20/27）
+
+| 事件 | 等级 | 说明 |
+|------|------|------|
+| `PreToolUse` | normal（文件操作） | 工具执行前（通过 Tool Registry 支持 40+ 工具的差异化叙述） |
+| `PostToolUse` | normal（文件操作） | 工具完成后（Bash/Grep/Glob/Read/WebSearch 含结果摘要） |
+| `PostToolUseFailure` | minimal | 工具执行失败 |
+| `Stop` | minimal | 任务完成 |
+| `StopFailure` | minimal | 任务执行失败 |
+| `Notification` | minimal | 需要用户注意（7 种通知类型：等待输入、权限确认、计算机使用模式等） |
+| `PermissionRequest` | minimal | 权限请求等待 |
+| `PermissionDenied` | minimal | 权限被拒绝 |
+| `SubagentStart` | normal | 子代理启动 |
+| `SubagentStop` | normal | 子代理完成 |
+| `SessionStart` | normal | 会话开始（区分 startup/resume/clear/compact） |
+| `SessionEnd` | normal | 会话结束 |
+| `PreCompact` | verbose | 上下文压缩开始 |
+| `PostCompact` | normal | 上下文压缩完成 |
+| `TaskCreated` | normal | 团队任务创建 |
+| `TaskCompleted` | normal | 团队任务完成 |
+| `WorktreeCreate` | verbose | Git 工作树创建 |
+| `WorktreeRemove` | verbose | Git 工作树移除 |
+| `CwdChanged` | verbose | 工作目录切换 |
+| `FileChanged` | verbose | 监听文件变更 |
 
 ### TTS 引擎
 

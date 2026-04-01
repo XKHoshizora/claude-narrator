@@ -7,14 +7,27 @@
         "Glob": "Searching files",
         "Grep": "Searching code",
         "Agent": "Starting agent",
-        "default": "Using {tool_name}"
+        "WebSearch": "Searching the web",
+        "WebFetch": "Fetching web page",
+        "EnterPlanMode": "Entering plan mode",
+        "ExitPlanMode": "Exiting plan mode",
+        "TaskCreate": "Creating task",
+        "SendMessage": "Sending message",
+        "NotebookEdit": "Editing notebook",
+        "Skill": "Invoking skill",
+        "EnterWorktree": "Entering worktree",
+        "ExitWorktree": "Exiting worktree",
+        "default": "Using {display_name}"
     },
     "PostToolUse": {
-        "Read": "Read complete",
+        "Read": "Read complete: {result_summary}",
         "Write": "Write complete",
         "Edit": "Edit complete",
-        "Bash": "Command complete",
-        "default": "{tool_name} done"
+        "Bash": "Command done: {result_summary}",
+        "Grep": "Search done: {result_summary}",
+        "Glob": "Found {result_summary}",
+        "WebSearch": "Web search done: {result_summary}",
+        "default": "{display_name} done"
     },
     "PostToolUseFailure": {
         "Bash": "Command failed",
@@ -24,6 +37,13 @@
         "default": "Task complete"
     },
     "Notification": {
+        "idle_prompt": "Waiting for your input",
+        "worker_permission_prompt": "A worker needs your permission",
+        "computer_use_enter": "Entering computer use mode",
+        "computer_use_exit": "Exiting computer use mode",
+        "auth_success": "Authentication successful",
+        "elicitation_complete": "Server interaction completed",
+        "elicitation_response": "Server response sent",
         "default": "Attention needed"
     },
     "SubagentStart": {
@@ -33,10 +53,25 @@
         "default": "Subtask complete"
     },
     "SessionStart": {
+        "startup": "New session started",
+        "resume": "Resuming session",
+        "clear": "Session cleared",
+        "compact": "Session restarted after compaction",
         "default": "Session started"
     },
     "PreCompact": {
         "default": "Compacting context"
     },
+    "StopFailure": {"default": "Task failed: {error}"},
+    "PostCompact": {"default": "Context compacted"},
+    "SessionEnd": {"default": "Session ended"},
+    "TaskCreated": {"default": "New task: {task_subject}"},
+    "TaskCompleted": {"default": "Task done: {task_subject}"},
+    "PermissionDenied": {"default": "Permission denied for {tool_name}"},
+    "PermissionRequest": {"default": "Permission needed for {tool_name}"},
+    "WorktreeCreate": {"default": "Worktree created: {name}"},
+    "WorktreeRemove": {"default": "Worktree removed"},
+    "CwdChanged": {"default": "Changed to {new_cwd}"},
+    "FileChanged": {"default": "File changed: {file_path}"},
     "ContextThreshold": {"default": "Context {threshold} percent used"}
 }

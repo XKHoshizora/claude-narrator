@@ -10,24 +10,63 @@
         "Glob": "ファイル探してみる",
         "Grep": "コード探してみる",
         "Agent": "ヘルプ呼ぶね",
-        "default": "{tool_name} 使うよ"
+        "WebSearch": "ネットで調べるね",
+        "WebFetch": "ウェブページ取ってくる",
+        "EnterPlanMode": "ちょっと計画立てるね",
+        "ExitPlanMode": "計画終わり、やるよ",
+        "TaskCreate": "タスク作るね",
+        "SendMessage": "メッセージ送るよ",
+        "NotebookEdit": "ノートブックいじるね",
+        "Skill": "スキル使うよ",
+        "EnterWorktree": "ワークツリーに入るよ",
+        "ExitWorktree": "ワークツリーから出るよ",
+        "default": "{display_name} 使うよ"
     },
     "PostToolUse": {
-        "Read": "オッケー、{file_path} 見終わった",
+        "Read": "オッケー、{result_summary}",
         "Write": "よし、{file_path} 保存した",
         "Edit": "はい、{file_path} 直した",
-        "Bash": "コマンド終わったよ",
-        "default": "{tool_name} できた"
+        "Bash": "コマンド終わったよ: {result_summary}",
+        "Grep": "見つかった: {result_summary}",
+        "Glob": "あったよ: {result_summary}",
+        "WebSearch": "検索結果出た: {result_summary}",
+        "default": "{display_name} できた"
     },
     "PostToolUseFailure": {
         "Bash": "あれ、コマンドがうまくいかなかった",
         "default": "うーん、{tool_name} でちょっと問題が"
     },
     "Stop": {"default": "全部終わり"},
-    "Notification": {"default": "ちょっと見てほしい"},
+    "Notification": {
+        "idle_prompt": "あなたの番だよ",
+        "worker_permission_prompt": "ワーカーが許可を求めてるよ",
+        "computer_use_enter": "コンピュータ操作モードに入るよ",
+        "computer_use_exit": "コンピュータ操作モード終わり",
+        "auth_success": "ログインできたよ",
+        "elicitation_complete": "サーバーの処理が終わった",
+        "elicitation_response": "サーバーから返事が来た",
+        "default": "ちょっと見てほしい"
+    },
     "SubagentStart": {"default": "サイドタスク始めるね"},
     "SubagentStop": {"default": "サイドタスク終わった"},
-    "SessionStart": {"default": "やるぞー"},
+    "SessionStart": {
+        "startup": "やるぞー",
+        "resume": "続きからだね",
+        "clear": "最初からやり直し",
+        "compact": "整理したよ、続けよう",
+        "default": "やるぞー"
+    },
     "PreCompact": {"default": "頭がいっぱいになりそう、整理するね"},
+    "StopFailure": {"default": "あらら、エラーだ"},
+    "PostCompact": {"default": "スッキリした"},
+    "SessionEnd": {"default": "おしまい"},
+    "TaskCreated": {"default": "新しいタスクだよ: {task_subject}"},
+    "TaskCompleted": {"default": "やったね: {task_subject}"},
+    "PermissionDenied": {"default": "ダメだった、{tool_name} 使えない"},
+    "PermissionRequest": {"default": "ちょっと、{tool_name} の許可ちょうだい"},
+    "WorktreeCreate": {"default": "ワークツリー作ったよ: {name}"},
+    "WorktreeRemove": {"default": "ワークツリー消したよ"},
+    "CwdChanged": {"default": "{new_cwd} に移動したよ"},
+    "FileChanged": {"default": "{file_path} が変わった"},
     "ContextThreshold": {"default": "コンテキスト {threshold}% だよ"}
 }

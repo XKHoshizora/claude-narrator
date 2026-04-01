@@ -27,6 +27,19 @@ EVENT_PRIORITY: dict[str, Priority] = {
     "PreToolUse": Priority.LOW,
     "PostToolUse": Priority.LOW,
     "PreCompact": Priority.LOW,
+    # Tier 1 additions
+    "StopFailure": Priority.HIGH,
+    "PermissionDenied": Priority.HIGH,
+    "PermissionRequest": Priority.HIGH,
+    "SessionEnd": Priority.MEDIUM,
+    "PostCompact": Priority.MEDIUM,
+    "TaskCreated": Priority.MEDIUM,
+    "TaskCompleted": Priority.MEDIUM,
+    # Tier 2 additions
+    "WorktreeCreate": Priority.LOW,
+    "WorktreeRemove": Priority.LOW,
+    "CwdChanged": Priority.LOW,
+    "FileChanged": Priority.LOW,
 }
 
 _counter = 0

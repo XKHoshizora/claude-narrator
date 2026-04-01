@@ -14,6 +14,7 @@ CLAUDE_DIR = Path.home() / ".claude"
 NARRATOR_MARKER = "claude_narrator.hooks.on_event"
 
 HOOK_EVENTS = [
+    # Existing
     "PreToolUse",
     "PostToolUse",
     "PostToolUseFailure",
@@ -23,6 +24,19 @@ HOOK_EVENTS = [
     "SubagentStop",
     "SessionStart",
     "PreCompact",
+    # Tier 1 additions
+    "StopFailure",
+    "PostCompact",
+    "SessionEnd",
+    "TaskCreated",
+    "TaskCompleted",
+    "PermissionDenied",
+    "PermissionRequest",
+    # Tier 2 additions
+    "WorktreeCreate",
+    "WorktreeRemove",
+    "CwdChanged",
+    "FileChanged",
 ]
 
 

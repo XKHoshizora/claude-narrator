@@ -10,24 +10,63 @@
         "Glob": "Performing file system search",
         "Grep": "Conducting code search",
         "Agent": "Initializing subordinate agent",
-        "default": "Invoking {tool_name}"
+        "WebSearch": "Initiating web search",
+        "WebFetch": "Retrieving web page content",
+        "EnterPlanMode": "Transitioning to planning mode",
+        "ExitPlanMode": "Exiting planning mode",
+        "TaskCreate": "Initializing new task",
+        "SendMessage": "Dispatching message",
+        "NotebookEdit": "Modifying notebook content",
+        "Skill": "Invoking specialized skill",
+        "EnterWorktree": "Entering git worktree",
+        "ExitWorktree": "Exiting git worktree",
+        "default": "Invoking {display_name}"
     },
     "PostToolUse": {
-        "Read": "File {file_path} read successfully",
+        "Read": "File read successfully: {result_summary}",
         "Write": "File {file_path} written successfully",
         "Edit": "Modifications to {file_path} applied",
-        "Bash": "Command executed successfully",
-        "default": "{tool_name} operation completed"
+        "Bash": "Command executed: {result_summary}",
+        "Grep": "Code search complete: {result_summary}",
+        "Glob": "File search complete: {result_summary}",
+        "WebSearch": "Web search complete: {result_summary}",
+        "default": "{display_name} operation completed"
     },
     "PostToolUseFailure": {
         "Bash": "Command execution encountered an error",
         "default": "{tool_name} operation failed"
     },
     "Stop": {"default": "All tasks completed successfully"},
-    "Notification": {"default": "Your attention is required"},
+    "Notification": {
+        "idle_prompt": "Awaiting user input",
+        "worker_permission_prompt": "A worker agent requires authorization",
+        "computer_use_enter": "Entering computer use mode",
+        "computer_use_exit": "Exiting computer use mode",
+        "auth_success": "Authentication completed successfully",
+        "elicitation_complete": "Server interaction completed",
+        "elicitation_response": "Server response dispatched",
+        "default": "Your attention is required"
+    },
     "SubagentStart": {"default": "Subordinate agent initialized"},
     "SubagentStop": {"default": "Subordinate agent completed"},
-    "SessionStart": {"default": "New session initialized"},
+    "SessionStart": {
+        "startup": "New session initialized",
+        "resume": "Resuming previous session",
+        "clear": "Session cleared and reinitialized",
+        "compact": "Session restarted following context compaction",
+        "default": "New session initialized"
+    },
     "PreCompact": {"default": "Context window nearing capacity, initiating compaction"},
+    "StopFailure": {"default": "Task execution failed: {error}"},
+    "PostCompact": {"default": "Context compaction completed successfully"},
+    "SessionEnd": {"default": "Session terminated"},
+    "TaskCreated": {"default": "Task created: {task_subject}"},
+    "TaskCompleted": {"default": "Task completed: {task_subject}"},
+    "PermissionDenied": {"default": "Permission denied for {tool_name} operation"},
+    "PermissionRequest": {"default": "Authorization required for {tool_name}"},
+    "WorktreeCreate": {"default": "Git worktree created: {name}"},
+    "WorktreeRemove": {"default": "Git worktree removed"},
+    "CwdChanged": {"default": "Working directory changed to {new_cwd}"},
+    "FileChanged": {"default": "File modification detected: {file_path}"},
     "ContextThreshold": {"default": "Context window utilization has reached {threshold} percent"}
 }

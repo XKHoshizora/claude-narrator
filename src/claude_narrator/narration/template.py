@@ -12,7 +12,10 @@ from typing import Any
 
 logger = logging.getLogger(__name__)
 
-HIGH_PRIORITY_EVENTS = {"PostToolUseFailure", "Notification"}
+HIGH_PRIORITY_EVENTS = {
+    "PostToolUseFailure", "Notification",
+    "StopFailure", "PermissionRequest", "PermissionDenied",
+}
 
 
 def _shorten_path(path: str, max_parts: int = 3) -> str:
@@ -23,10 +26,20 @@ def _shorten_path(path: str, max_parts: int = 3) -> str:
     return str(Path(*parts[-max_parts:]))
 
 
+def _truncate(text: str, max_len: int = 80) -> str:
+    """Truncate text to max length, adding ellipsis if needed."""
+    if len(text) <= max_len:
+        return text
+    return text[: max_len - 3] + "..."
+
+
 def _extract_variables(event: dict[str, Any]) -> dict[str, str]:
     """Extract template variables from event data."""
     variables: dict[str, str] = {}
     variables["tool_name"] = event.get("tool_name", "unknown")
+    from claude_narrator.tool_registry import get_display_name, get_tool_meta, parse_response as _parse_response
+    variables["display_name"] = get_display_name(variables["tool_name"])
+    variables["category"] = get_tool_meta(variables["tool_name"]).category.value
 
     tool_input = event.get("tool_input", {})
     if isinstance(tool_input, dict):
@@ -47,7 +60,81 @@ def _extract_variables(event: dict[str, Any]) -> dict[str, str]:
     if "used_percentage" in event:
         variables["used_percentage"] = str(int(event["used_percentage"]))
 
+    # Error fields (PostToolUseFailure, StopFailure)
+    if "error" in event:
+        err = event["error"]
+        variables["error"] = _truncate(str(err))
+
+    # Assistant message (Stop, StopFailure, SubagentStop)
+    if "last_assistant_message" in event:
+        variables["last_assistant_message"] = _truncate(
+            str(event["last_assistant_message"])
+        )
+
+    # Agent fields (SubagentStart, SubagentStop, SessionStart)
+    if "agent_type" in event:
+        variables["agent_type"] = event["agent_type"]
+    if "agent_id" in event:
+        variables["agent_id"] = event["agent_id"]
+
+    # Session fields
+    if "source" in event:
+        variables["source"] = event["source"]
+    if "model" in event:
+        variables["model"] = event["model"]
+
+    # Compact fields
+    if "compact_summary" in event:
+        variables["compact_summary"] = _truncate(str(event["compact_summary"]))
+    if "trigger" in event:
+        variables["trigger"] = event["trigger"]
+
+    # Notification fields
+    if "notification_type" in event:
+        variables["notification_type"] = event["notification_type"]
+    if "title" in event:
+        variables["title"] = event["title"]
+
+    # Task fields (TaskCreated, TaskCompleted)
+    if "task_subject" in event:
+        variables["task_subject"] = _truncate(event["task_subject"], 60)
+    if "teammate_name" in event:
+        variables["teammate_name"] = event["teammate_name"]
+
+    # Worktree fields
+    if "name" in event:
+        variables["name"] = event["name"]
+    if "worktree_path" in event:
+        variables["worktree_path"] = _shorten_path(event["worktree_path"])
+
+    # CwdChanged fields
+    if "old_cwd" in event:
+        variables["old_cwd"] = _shorten_path(event["old_cwd"])
+    if "new_cwd" in event:
+        variables["new_cwd"] = _shorten_path(event["new_cwd"])
+
+    # FileChanged fields
+    if "file_path" not in variables and "file_path" in event:
+        variables["file_path"] = _shorten_path(event["file_path"])
+    if "event" in event:
+        variables["file_event"] = event["event"]
+
+    # PostToolUse result summary via registry
+    if event.get("hook_event_name") == "PostToolUse" and "tool_response" in event:
+        summary_vars = _parse_response(variables["tool_name"], event["tool_response"])
+        variables.update(summary_vars)
+
     return variables
+
+
+def _get_sub_key(event: dict[str, Any]) -> str:
+    """Get the sub-key for template lookup. Falls back to tool_name."""
+    event_name = event.get("hook_event_name", "")
+    if event_name == "SessionStart":
+        return event.get("source", "default")
+    if event_name == "Notification":
+        return event.get("notification_type", "default")
+    return event.get("tool_name", "")
 
 
 @dataclass
@@ -144,10 +231,10 @@ class TemplateNarrator:
             return f"{count} {tool} operations"
 
         event_type = event.get("hook_event_name", "")
-        tool_name = event.get("tool_name", "")
+        sub_key = _get_sub_key(event)
         variables = _extract_variables(event)
 
-        body = self._resolve_body(event_type, tool_name, variables)
+        body = self._resolve_body(event_type, sub_key, variables)
         if body is None:
             return None
 
@@ -155,36 +242,36 @@ class TemplateNarrator:
         suffix = self._pick_random(self._all_suffixes)
         return self._assemble(prefix, body, suffix)
 
-    def _resolve_body(self, event_type: str, tool_name: str, variables: dict[str, str]) -> str | None:
+    def _resolve_body(self, event_type: str, sub_key: str, variables: dict[str, str]) -> str | None:
         if event_type in HIGH_PRIORITY_EVENTS:
             # Longest template wins among all layers
             candidates: list[str] = []
             for layer in self._layers:
-                text = self._render_from_layer(layer, event_type, tool_name, variables)
+                text = self._render_from_layer(layer, event_type, sub_key, variables)
                 if text:
                     candidates.append(text)
             # Also check fallback
-            text = self._render_from_templates(self._fallback, event_type, tool_name, variables)
+            text = self._render_from_templates(self._fallback, event_type, sub_key, variables)
             if text:
                 candidates.append(text)
             return max(candidates, key=len) if candidates else None
         else:
             # First match wins
             for layer in self._layers:
-                text = self._render_from_layer(layer, event_type, tool_name, variables)
+                text = self._render_from_layer(layer, event_type, sub_key, variables)
                 if text:
                     return text
             # Fallback to base templates
-            return self._render_from_templates(self._fallback, event_type, tool_name, variables)
+            return self._render_from_templates(self._fallback, event_type, sub_key, variables)
 
-    def _render_from_layer(self, layer: PersonalityLayer, event_type: str, tool_name: str, variables: dict) -> str | None:
-        return self._render_from_templates(layer.templates, event_type, tool_name, variables)
+    def _render_from_layer(self, layer: PersonalityLayer, event_type: str, sub_key: str, variables: dict) -> str | None:
+        return self._render_from_templates(layer.templates, event_type, sub_key, variables)
 
-    def _render_from_templates(self, templates: dict, event_type: str, tool_name: str, variables: dict) -> str | None:
+    def _render_from_templates(self, templates: dict, event_type: str, sub_key: str, variables: dict) -> str | None:
         event_templates = templates.get(event_type)
         if not event_templates:
             return None
-        template = event_templates.get(tool_name, event_templates.get("default"))
+        template = event_templates.get(sub_key, event_templates.get("default"))
         if not template:
             return None
         try:
@@ -209,6 +296,8 @@ class TemplateNarrator:
         return " ".join(parts)
 
 
+# Built-in tengu words sourced from Claude Code v2.1.88 spinnerVerbs.ts (189 words).
+# This URL is a third-party mirror kept as a supplementary update channel.
 TENGU_GITHUB_URL = "https://raw.githubusercontent.com/levindixon/tengu_spinner_words/main/known-processing-words.json"
 
 

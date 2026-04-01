@@ -25,6 +25,9 @@ class SoundEffects:
             "Stop": "complete.wav",
             "Notification": "alert.wav",
             "PostToolUseFailure": "error.wav",
+            "StopFailure": "error.wav",
+            "PermissionDenied": "alert.wav",
+            "TaskCompleted": "complete.wav",
         })
         self._initialized = False
 

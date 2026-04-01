@@ -7,24 +7,63 @@
         "Glob": "搜索文件",
         "Grep": "搜索内容",
         "Agent": "启动代理",
-        "default": "调用 {tool_name}"
+        "WebSearch": "搜索网页",
+        "WebFetch": "获取网页",
+        "EnterPlanMode": "进入计划模式",
+        "ExitPlanMode": "退出计划模式",
+        "TaskCreate": "创建任务",
+        "SendMessage": "发送消息",
+        "NotebookEdit": "编辑笔记本",
+        "Skill": "调用技能",
+        "EnterWorktree": "进入工作树",
+        "ExitWorktree": "退出工作树",
+        "default": "使用 {display_name}"
     },
     "PostToolUse": {
-        "Read": "读取完成",
+        "Read": "读取完成: {result_summary}",
         "Write": "写入完成",
         "Edit": "编辑完成",
-        "Bash": "命令完成",
-        "default": "{tool_name} 完成"
+        "Bash": "命令完成: {result_summary}",
+        "Grep": "搜索完成: {result_summary}",
+        "Glob": "找到 {result_summary}",
+        "WebSearch": "网页搜索完成: {result_summary}",
+        "default": "{display_name} 完成"
     },
     "PostToolUseFailure": {
         "Bash": "命令失败",
         "default": "{tool_name} 失败"
     },
     "Stop": { "default": "任务完成" },
-    "Notification": { "default": "需要你的注意" },
+    "Notification": {
+        "idle_prompt": "等待你的输入",
+        "worker_permission_prompt": "工作者需要你的权限",
+        "computer_use_enter": "进入计算机使用模式",
+        "computer_use_exit": "退出计算机使用模式",
+        "auth_success": "认证成功",
+        "elicitation_complete": "服务器交互完成",
+        "elicitation_response": "服务器响应已发送",
+        "default": "需要你的注意"
+    },
     "SubagentStart": { "default": "启动子任务" },
     "SubagentStop": { "default": "子任务完成" },
-    "SessionStart": { "default": "会话开始" },
+    "SessionStart": {
+        "startup": "新会话开始",
+        "resume": "恢复会话",
+        "clear": "会话已清除",
+        "compact": "压缩后重启会话",
+        "default": "会话开始"
+    },
     "PreCompact": { "default": "上下文压缩中" },
+    "StopFailure": {"default": "任务失败: {error}"},
+    "PostCompact": {"default": "上下文压缩完成"},
+    "SessionEnd": {"default": "会话结束"},
+    "TaskCreated": {"default": "新任务: {task_subject}"},
+    "TaskCompleted": {"default": "任务完成: {task_subject}"},
+    "PermissionDenied": {"default": "{tool_name} 权限被拒绝"},
+    "PermissionRequest": {"default": "{tool_name} 需要权限"},
+    "WorktreeCreate": {"default": "工作树已创建: {name}"},
+    "WorktreeRemove": {"default": "工作树已移除"},
+    "CwdChanged": {"default": "切换到 {new_cwd}"},
+    "FileChanged": {"default": "文件变更: {file_path}"},
     "ContextThreshold": {"default": "上下文已使用 {threshold}%"}
 }

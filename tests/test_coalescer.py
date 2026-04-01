@@ -56,3 +56,35 @@ class TestEventCoalescer:
 
     def test_flush_empty_returns_none(self, coalescer):
         assert coalescer.flush() is None
+
+
+class TestNewImmediateEvents:
+    """Tests for new events that should pass through immediately."""
+
+    @pytest.fixture
+    def coalescer(self):
+        return EventCoalescer(window_seconds=0.5)
+
+    def test_stop_failure_immediate(self, coalescer):
+        result = coalescer.process({"hook_event_name": "StopFailure", "error": "timeout"})
+        assert result is not None
+        assert result["hook_event_name"] == "StopFailure"
+
+    def test_permission_request_immediate(self, coalescer):
+        result = coalescer.process({"hook_event_name": "PermissionRequest", "tool_name": "Write"})
+        assert result is not None
+        assert result["hook_event_name"] == "PermissionRequest"
+
+    def test_permission_denied_immediate(self, coalescer):
+        result = coalescer.process({"hook_event_name": "PermissionDenied", "tool_name": "Bash"})
+        assert result is not None
+        assert result["hook_event_name"] == "PermissionDenied"
+
+    def test_file_changed_coalesces(self, coalescer):
+        coalescer.process({"hook_event_name": "FileChanged", "file_path": "/a.py", "event": "change"})
+        result = coalescer.process({"hook_event_name": "FileChanged", "file_path": "/b.py", "event": "change"})
+        # Same key (FileChanged:), so should coalesce
+        assert result is None
+        flushed = coalescer.flush()
+        assert flushed is not None
+        assert flushed.get("_coalesced_count", 1) == 2

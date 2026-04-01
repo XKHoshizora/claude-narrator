@@ -7,24 +7,63 @@
         "Glob": "ファイル検索中",
         "Grep": "コード検索中",
         "Agent": "エージェント起動",
-        "default": "{tool_name} を使用中"
+        "WebSearch": "ウェブ検索中",
+        "WebFetch": "ウェブページ取得中",
+        "EnterPlanMode": "プランモード開始",
+        "ExitPlanMode": "プランモード終了",
+        "TaskCreate": "タスク作成中",
+        "SendMessage": "メッセージ送信中",
+        "NotebookEdit": "ノートブック編集中",
+        "Skill": "スキル呼び出し",
+        "EnterWorktree": "ワークツリーに入る",
+        "ExitWorktree": "ワークツリーを出る",
+        "default": "{display_name} を使用中"
     },
     "PostToolUse": {
-        "Read": "読み込み完了",
+        "Read": "読み込み完了: {result_summary}",
         "Write": "書き込み完了",
         "Edit": "編集完了",
-        "Bash": "コマンド完了",
-        "default": "{tool_name} 完了"
+        "Bash": "コマンド完了: {result_summary}",
+        "Grep": "検索完了: {result_summary}",
+        "Glob": "{result_summary}",
+        "WebSearch": "ウェブ検索完了: {result_summary}",
+        "default": "{display_name} 完了"
     },
     "PostToolUseFailure": {
         "Bash": "コマンド失敗",
         "default": "{tool_name} 失敗"
     },
     "Stop": { "default": "タスク完了" },
-    "Notification": { "default": "確認が必要です" },
+    "Notification": {
+        "idle_prompt": "入力をお待ちしています",
+        "worker_permission_prompt": "ワーカーが権限を必要としています",
+        "computer_use_enter": "コンピュータ使用モード開始",
+        "computer_use_exit": "コンピュータ使用モード終了",
+        "auth_success": "認証成功",
+        "elicitation_complete": "サーバー操作完了",
+        "elicitation_response": "サーバー応答送信済み",
+        "default": "確認が必要です"
+    },
     "SubagentStart": { "default": "サブタスク開始" },
     "SubagentStop": { "default": "サブタスク完了" },
-    "SessionStart": { "default": "セッション開始" },
+    "SessionStart": {
+        "startup": "新しいセッション開始",
+        "resume": "セッション再開",
+        "clear": "セッションクリア",
+        "compact": "圧縮後セッション再起動",
+        "default": "セッション開始"
+    },
     "PreCompact": { "default": "コンテキスト圧縮中" },
+    "StopFailure": {"default": "タスク失敗: {error}"},
+    "PostCompact": {"default": "コンテキスト圧縮完了"},
+    "SessionEnd": {"default": "セッション終了"},
+    "TaskCreated": {"default": "新タスク: {task_subject}"},
+    "TaskCompleted": {"default": "タスク完了: {task_subject}"},
+    "PermissionDenied": {"default": "{tool_name} 権限拒否"},
+    "PermissionRequest": {"default": "{tool_name} 権限が必要です"},
+    "WorktreeCreate": {"default": "ワークツリー作成: {name}"},
+    "WorktreeRemove": {"default": "ワークツリー削除"},
+    "CwdChanged": {"default": "{new_cwd} に移動"},
+    "FileChanged": {"default": "ファイル変更: {file_path}"},
     "ContextThreshold": {"default": "コンテキスト {threshold}% 使用中"}
 }

@@ -5,7 +5,10 @@ from __future__ import annotations
 import time
 from typing import Any
 
-IMMEDIATE_EVENTS = {"Notification", "PostToolUseFailure", "Stop"}
+IMMEDIATE_EVENTS = {
+    "Notification", "PostToolUseFailure", "Stop",
+    "StopFailure", "PermissionRequest", "PermissionDenied",
+}
 
 
 class EventCoalescer:

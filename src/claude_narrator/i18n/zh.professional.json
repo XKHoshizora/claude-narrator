@@ -10,24 +10,63 @@
         "Glob": "正在进行文件搜索",
         "Grep": "正在进行代码检索",
         "Agent": "正在初始化子代理",
-        "default": "正在调用 {tool_name}"
+        "WebSearch": "正在执行网页搜索",
+        "WebFetch": "正在获取网页内容",
+        "EnterPlanMode": "正在切换至计划模式",
+        "ExitPlanMode": "退出计划模式",
+        "TaskCreate": "正在创建新任务",
+        "SendMessage": "正在发送消息",
+        "NotebookEdit": "正在修改笔记本内容",
+        "Skill": "正在调用专项技能",
+        "EnterWorktree": "正在进入工作树",
+        "ExitWorktree": "正在退出工作树",
+        "default": "正在调用 {display_name}"
     },
     "PostToolUse": {
-        "Read": "文件 {file_path} 读取完成",
+        "Read": "文件读取完成: {result_summary}",
         "Write": "文件 {file_path} 写入完成",
         "Edit": "文件 {file_path} 修改已应用",
-        "Bash": "命令执行完成",
-        "default": "{tool_name} 操作完成"
+        "Bash": "命令执行完成: {result_summary}",
+        "Grep": "代码检索完成: {result_summary}",
+        "Glob": "文件搜索完成: {result_summary}",
+        "WebSearch": "网页搜索完成: {result_summary}",
+        "default": "{display_name} 操作完成"
     },
     "PostToolUseFailure": {
         "Bash": "命令执行遇到错误",
         "default": "{tool_name} 操作失败"
     },
     "Stop": {"default": "全部任务已完成"},
-    "Notification": {"default": "需要您的关注"},
+    "Notification": {
+        "idle_prompt": "正在等待用户输入",
+        "worker_permission_prompt": "工作代理需要您的授权",
+        "computer_use_enter": "正在进入计算机操作模式",
+        "computer_use_exit": "已退出计算机操作模式",
+        "auth_success": "认证已成功完成",
+        "elicitation_complete": "服务器交互已完成",
+        "elicitation_response": "服务器响应已发送",
+        "default": "需要您的关注"
+    },
     "SubagentStart": {"default": "子代理已初始化"},
     "SubagentStop": {"default": "子代理已完成"},
-    "SessionStart": {"default": "新会话已初始化"},
+    "SessionStart": {
+        "startup": "新会话已初始化",
+        "resume": "正在恢复上一会话",
+        "clear": "会话已清除并重新初始化",
+        "compact": "上下文压缩后会话已重启",
+        "default": "新会话已初始化"
+    },
     "PreCompact": {"default": "上下文窗口接近容量上限，正在启动压缩"},
+    "StopFailure": {"default": "任务执行失败: {error}"},
+    "PostCompact": {"default": "上下文压缩已完成"},
+    "SessionEnd": {"default": "会话已终止"},
+    "TaskCreated": {"default": "任务已创建: {task_subject}"},
+    "TaskCompleted": {"default": "任务已完成: {task_subject}"},
+    "PermissionDenied": {"default": "{tool_name} 操作权限被拒绝"},
+    "PermissionRequest": {"default": "{tool_name} 需要授权"},
+    "WorktreeCreate": {"default": "Git 工作树已创建: {name}"},
+    "WorktreeRemove": {"default": "Git 工作树已移除"},
+    "CwdChanged": {"default": "工作目录已变更至 {new_cwd}"},
+    "FileChanged": {"default": "检测到文件变更: {file_path}"},
     "ContextThreshold": {"default": "上下文窗口使用率已达 {threshold}%"}
 }

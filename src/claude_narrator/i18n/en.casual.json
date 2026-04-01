@@ -10,24 +10,63 @@
         "Glob": "Looking around for files",
         "Grep": "Searching for stuff",
         "Agent": "Getting some help",
-        "default": "Using {tool_name}"
+        "WebSearch": "Googling something",
+        "WebFetch": "Grabbing a web page",
+        "EnterPlanMode": "Switching to planning mode",
+        "ExitPlanMode": "Done planning, back to work",
+        "TaskCreate": "Making a new task",
+        "SendMessage": "Firing off a message",
+        "NotebookEdit": "Tweaking the notebook",
+        "Skill": "Using a skill",
+        "EnterWorktree": "Hopping into a worktree",
+        "ExitWorktree": "Leaving the worktree",
+        "default": "Using {display_name}"
     },
     "PostToolUse": {
-        "Read": "Got it, {file_path} is done",
+        "Read": "Got it, {result_summary}",
         "Write": "Cool, {file_path} is saved",
         "Edit": "Alright, {file_path} updated",
-        "Bash": "That went through",
-        "default": "Done with {tool_name}"
+        "Bash": "That went through: {result_summary}",
+        "Grep": "Found some stuff: {result_summary}",
+        "Glob": "Here's what's there: {result_summary}",
+        "WebSearch": "Got the results: {result_summary}",
+        "default": "Done with {display_name}"
     },
     "PostToolUseFailure": {
         "Bash": "Oops, that command didn't work",
         "default": "Hmm, {tool_name} hit a snag"
     },
     "Stop": {"default": "All done here"},
-    "Notification": {"default": "Heads up, need you for a sec"},
+    "Notification": {
+        "idle_prompt": "Hey, your turn",
+        "worker_permission_prompt": "A worker needs your okay",
+        "computer_use_enter": "Going into computer use mode",
+        "computer_use_exit": "Done with computer use mode",
+        "auth_success": "Logged in, all good",
+        "elicitation_complete": "Server thing is done",
+        "elicitation_response": "Got the server response",
+        "default": "Heads up, need you for a sec"
+    },
     "SubagentStart": {"default": "Kicking off a side task"},
     "SubagentStop": {"default": "Side task wrapped up"},
-    "SessionStart": {"default": "Hey, we're rolling"},
+    "SessionStart": {
+        "startup": "Hey, we're rolling",
+        "resume": "Back at it",
+        "clear": "Fresh start",
+        "compact": "Cleaned up, let's keep going",
+        "default": "Hey, we're rolling"
+    },
     "PreCompact": {"default": "Running out of brain space, cleaning up"},
+    "StopFailure": {"default": "Oops, something broke"},
+    "PostCompact": {"default": "Brain cleared, much better"},
+    "SessionEnd": {"default": "Alright, wrapping up"},
+    "TaskCreated": {"default": "Got a new task: {task_subject}"},
+    "TaskCompleted": {"default": "Nailed it: {task_subject}"},
+    "PermissionDenied": {"default": "Nope, can't use {tool_name}"},
+    "PermissionRequest": {"default": "Hey, need permission for {tool_name}"},
+    "WorktreeCreate": {"default": "Made a new worktree: {name}"},
+    "WorktreeRemove": {"default": "Cleaned up a worktree"},
+    "CwdChanged": {"default": "Moved to {new_cwd}"},
+    "FileChanged": {"default": "Something changed in {file_path}"},
     "ContextThreshold": {"default": "Heads up, context is {threshold} percent full"}
 }

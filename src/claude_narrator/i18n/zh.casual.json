@@ -10,24 +10,63 @@
         "Glob": "找找文件",
         "Grep": "搜搜代码",
         "Agent": "叫个帮手",
-        "default": "用一下 {tool_name}"
+        "WebSearch": "搜搜网上的",
+        "WebFetch": "抓个网页",
+        "EnterPlanMode": "先想想怎么干",
+        "ExitPlanMode": "想好了，开干",
+        "TaskCreate": "建个任务",
+        "SendMessage": "发个消息",
+        "NotebookEdit": "改改笔记本",
+        "Skill": "用个技能",
+        "EnterWorktree": "进入工作树",
+        "ExitWorktree": "离开工作树",
+        "default": "用一下 {display_name}"
     },
     "PostToolUse": {
-        "Read": "好了，{file_path} 看完了",
+        "Read": "看完了，{result_summary}",
         "Write": "搞定，{file_path} 存好了",
         "Edit": "行，{file_path} 改好了",
-        "Bash": "命令跑完了",
-        "default": "{tool_name} 好了"
+        "Bash": "命令跑完了: {result_summary}",
+        "Grep": "搜到了: {result_summary}",
+        "Glob": "找到了: {result_summary}",
+        "WebSearch": "搜到了: {result_summary}",
+        "default": "{display_name} 好了"
     },
     "PostToolUseFailure": {
         "Bash": "哎呀，命令出错了",
         "default": "嗯，{tool_name} 出了点问题"
     },
     "Stop": {"default": "搞定收工"},
-    "Notification": {"default": "看一下这里"},
+    "Notification": {
+        "idle_prompt": "轮到你了",
+        "worker_permission_prompt": "有个工作者需要你同意",
+        "computer_use_enter": "进入电脑操作模式了",
+        "computer_use_exit": "电脑操作结束了",
+        "auth_success": "登录成功了",
+        "elicitation_complete": "服务器那边搞完了",
+        "elicitation_response": "服务器回了消息",
+        "default": "看一下这里"
+    },
     "SubagentStart": {"default": "开个小任务"},
     "SubagentStop": {"default": "小任务完成了"},
-    "SessionStart": {"default": "开始干活"},
+    "SessionStart": {
+        "startup": "开始干活",
+        "resume": "继续上次的",
+        "clear": "重新来过",
+        "compact": "清理完了，接着干",
+        "default": "开始干活"
+    },
     "PreCompact": {"default": "脑子快满了，清理一下"},
+    "StopFailure": {"default": "哎呀，出错了"},
+    "PostCompact": {"default": "清理完了，舒服多了"},
+    "SessionEnd": {"default": "收工了"},
+    "TaskCreated": {"default": "来了个新任务: {task_subject}"},
+    "TaskCompleted": {"default": "搞定了: {task_subject}"},
+    "PermissionDenied": {"default": "不行，{tool_name} 没权限"},
+    "PermissionRequest": {"default": "等一下，{tool_name} 需要你同意"},
+    "WorktreeCreate": {"default": "建了个新工作树: {name}"},
+    "WorktreeRemove": {"default": "删了个工作树"},
+    "CwdChanged": {"default": "跑到 {new_cwd} 了"},
+    "FileChanged": {"default": "{file_path} 有变化"},
     "ContextThreshold": {"default": "注意，上下文已经 {threshold}% 了"}
 }

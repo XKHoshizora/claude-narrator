@@ -10,24 +10,63 @@
         "Glob": "spelunking for files",
         "Grep": "hunting through the code",
         "Agent": "summoning a helper",
-        "default": "wielding {tool_name}"
+        "WebSearch": "casting a net across the web",
+        "WebFetch": "snatching a web page",
+        "EnterPlanMode": "entering the war room",
+        "ExitPlanMode": "leaving the war room",
+        "TaskCreate": "forging a new quest",
+        "SendMessage": "dispatching a raven",
+        "NotebookEdit": "scribbling in the tome",
+        "Skill": "channeling a skill",
+        "EnterWorktree": "stepping into the grove",
+        "ExitWorktree": "leaving the grove",
+        "default": "wielding {display_name}"
     },
     "PostToolUse": {
-        "Read": "absorbed {file_path}",
+        "Read": "absorbed the knowledge: {result_summary}",
         "Write": "manifested {file_path}",
         "Edit": "reshaped {file_path}",
-        "Bash": "command vanquished",
-        "default": "{tool_name} conquered"
+        "Bash": "command vanquished: {result_summary}",
+        "Grep": "prey found: {result_summary}",
+        "Glob": "treasures unearthed: {result_summary}",
+        "WebSearch": "the web has spoken: {result_summary}",
+        "default": "{display_name} conquered"
     },
     "PostToolUseFailure": {
         "Bash": "command went sideways",
         "default": "{tool_name} fumbled"
     },
     "Stop": {"default": "mission accomplished"},
-    "Notification": {"default": "hey, need your attention"},
+    "Notification": {
+        "idle_prompt": "the oracle awaits your words",
+        "worker_permission_prompt": "a minion seeks your blessing",
+        "computer_use_enter": "possessing the machine",
+        "computer_use_exit": "releasing the machine",
+        "auth_success": "the gates have opened",
+        "elicitation_complete": "the ritual is complete",
+        "elicitation_response": "the spirits have answered",
+        "default": "hey, need your attention"
+    },
     "SubagentStart": {"default": "dispatching a minion"},
     "SubagentStop": {"default": "minion reported back"},
-    "SessionStart": {"default": "let's roll"},
+    "SessionStart": {
+        "startup": "let's roll",
+        "resume": "back from the void",
+        "clear": "wiped the slate clean",
+        "compact": "reshuffled the neurons",
+        "default": "let's roll"
+    },
     "PreCompact": {"default": "tidying up the memory banks"},
+    "StopFailure": {"default": "mission failed spectacularly"},
+    "PostCompact": {"default": "memory banks defragmented"},
+    "SessionEnd": {"default": "fading into the ether"},
+    "TaskCreated": {"default": "quest accepted: {task_subject}"},
+    "TaskCompleted": {"default": "quest complete: {task_subject}"},
+    "PermissionDenied": {"default": "{tool_name} access denied by the gatekeepers"},
+    "PermissionRequest": {"default": "seeking permission to wield {tool_name}"},
+    "WorktreeCreate": {"default": "sprouted a new worktree: {name}"},
+    "WorktreeRemove": {"default": "pruned a worktree"},
+    "CwdChanged": {"default": "teleported to {new_cwd}"},
+    "FileChanged": {"default": "{file_path} shifted"},
     "ContextThreshold": {"default": "context is {threshold} percent full"}
 }

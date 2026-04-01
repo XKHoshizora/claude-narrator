@@ -10,24 +10,63 @@
         "Glob": "ファイルシステム検索を実行中",
         "Grep": "コード検索を実行中",
         "Agent": "サブエージェントを初期化中",
-        "default": "{tool_name} を呼び出し中"
+        "WebSearch": "ウェブ検索を実行中",
+        "WebFetch": "ウェブページを取得中",
+        "EnterPlanMode": "計画モードに移行中",
+        "ExitPlanMode": "計画モードを終了",
+        "TaskCreate": "新しいタスクを作成中",
+        "SendMessage": "メッセージを送信中",
+        "NotebookEdit": "ノートブックを編集中",
+        "Skill": "専門スキルを呼び出し中",
+        "EnterWorktree": "ワークツリーに入ります",
+        "ExitWorktree": "ワークツリーから退出します",
+        "default": "{display_name} を呼び出し中"
     },
     "PostToolUse": {
-        "Read": "ファイル {file_path} の読み取りが完了しました",
+        "Read": "ファイル読み取り完了: {result_summary}",
         "Write": "ファイル {file_path} の書き込みが完了しました",
         "Edit": "{file_path} への変更が適用されました",
-        "Bash": "コマンドが正常に実行されました",
-        "default": "{tool_name} 操作が完了しました"
+        "Bash": "コマンド実行完了: {result_summary}",
+        "Grep": "コード検索完了: {result_summary}",
+        "Glob": "ファイル検索完了: {result_summary}",
+        "WebSearch": "ウェブ検索完了: {result_summary}",
+        "default": "{display_name} 操作が完了しました"
     },
     "PostToolUseFailure": {
         "Bash": "コマンド実行でエラーが発生しました",
         "default": "{tool_name} 操作が失敗しました"
     },
     "Stop": {"default": "すべてのタスクが正常に完了しました"},
-    "Notification": {"default": "ご確認が必要です"},
+    "Notification": {
+        "idle_prompt": "ユーザーの入力をお待ちしています",
+        "worker_permission_prompt": "ワーカーエージェントが認可を必要としています",
+        "computer_use_enter": "コンピュータ操作モードに入ります",
+        "computer_use_exit": "コンピュータ操作モードを終了しました",
+        "auth_success": "認証が正常に完了しました",
+        "elicitation_complete": "サーバー操作が完了しました",
+        "elicitation_response": "サーバー応答が送信されました",
+        "default": "ご確認が必要です"
+    },
     "SubagentStart": {"default": "サブエージェントが初期化されました"},
     "SubagentStop": {"default": "サブエージェントが完了しました"},
-    "SessionStart": {"default": "新しいセッションが初期化されました"},
+    "SessionStart": {
+        "startup": "新しいセッションが初期化されました",
+        "resume": "前回のセッションを再開しています",
+        "clear": "セッションがクリアされ再初期化されました",
+        "compact": "コンテキスト圧縮後にセッションが再起動されました",
+        "default": "新しいセッションが初期化されました"
+    },
     "PreCompact": {"default": "コンテキストウィンドウが容量に近づいています。圧縮を開始します"},
+    "StopFailure": {"default": "タスク実行エラー: {error}"},
+    "PostCompact": {"default": "コンテキスト圧縮が完了しました"},
+    "SessionEnd": {"default": "セッションが終了しました"},
+    "TaskCreated": {"default": "タスクが作成されました: {task_subject}"},
+    "TaskCompleted": {"default": "タスクが完了しました: {task_subject}"},
+    "PermissionDenied": {"default": "{tool_name} 操作の権限が拒否されました"},
+    "PermissionRequest": {"default": "{tool_name} の認可が必要です"},
+    "WorktreeCreate": {"default": "Gitワークツリーが作成されました: {name}"},
+    "WorktreeRemove": {"default": "Gitワークツリーが削除されました"},
+    "CwdChanged": {"default": "作業ディレクトリが {new_cwd} に変更されました"},
+    "FileChanged": {"default": "ファイル変更を検出: {file_path}"},
     "ContextThreshold": {"default": "コンテキストウィンドウの使用率が {threshold}% に達しました"}
 }

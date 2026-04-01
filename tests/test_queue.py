@@ -52,3 +52,22 @@ class TestNarrationQueue:
 
     def test_has_interrupt(self, queue):
         assert queue.has_interrupt is False
+
+
+class TestNewEventPriorities:
+    """Tests for new event priority mappings."""
+
+    def test_tier1_high_priority(self):
+        from claude_narrator.queue import EVENT_PRIORITY, Priority
+        for event in ["StopFailure", "PermissionDenied", "PermissionRequest"]:
+            assert EVENT_PRIORITY[event] == Priority.HIGH, f"{event} should be HIGH"
+
+    def test_tier1_medium_priority(self):
+        from claude_narrator.queue import EVENT_PRIORITY, Priority
+        for event in ["SessionEnd", "PostCompact", "TaskCreated", "TaskCompleted"]:
+            assert EVENT_PRIORITY[event] == Priority.MEDIUM, f"{event} should be MEDIUM"
+
+    def test_tier2_low_priority(self):
+        from claude_narrator.queue import EVENT_PRIORITY, Priority
+        for event in ["WorktreeCreate", "WorktreeRemove", "CwdChanged", "FileChanged"]:
+            assert EVENT_PRIORITY[event] == Priority.LOW, f"{event} should be LOW"

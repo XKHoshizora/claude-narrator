@@ -10,24 +10,63 @@
         "Glob": "探索文件",
         "Grep": "搜寻代码",
         "Agent": "召唤小助手",
-        "default": "挥舞 {tool_name}"
+        "WebSearch": "撒网搜索",
+        "WebFetch": "抓取网页",
+        "EnterPlanMode": "进入作战室",
+        "ExitPlanMode": "离开作战室",
+        "TaskCreate": "锻造新任务",
+        "SendMessage": "放出飞鸽传书",
+        "NotebookEdit": "在魔法书上涂写",
+        "Skill": "施展技能",
+        "EnterWorktree": "踏入林中",
+        "ExitWorktree": "走出林中",
+        "default": "挥舞 {display_name}"
     },
     "PostToolUse": {
-        "Read": "吸收了 {file_path}",
+        "Read": "知识已吸收: {result_summary}",
         "Write": "创造了 {file_path}",
         "Edit": "改造了 {file_path}",
-        "Bash": "命令被征服",
-        "default": "{tool_name} 搞定"
+        "Bash": "命令被征服: {result_summary}",
+        "Grep": "猎物到手: {result_summary}",
+        "Glob": "宝藏出土: {result_summary}",
+        "WebSearch": "网络回响: {result_summary}",
+        "default": "{display_name} 搞定"
     },
     "PostToolUseFailure": {
         "Bash": "命令翻车了",
         "default": "{tool_name} 失手了"
     },
     "Stop": {"default": "任务达成"},
-    "Notification": {"default": "嘿，需要你注意一下"},
+    "Notification": {
+        "idle_prompt": "神谕等待你的话语",
+        "worker_permission_prompt": "手下求你赐福",
+        "computer_use_enter": "附身机器中",
+        "computer_use_exit": "释放机器",
+        "auth_success": "城门已开",
+        "elicitation_complete": "仪式已完成",
+        "elicitation_response": "神灵已回应",
+        "default": "嘿，需要你注意一下"
+    },
     "SubagentStart": {"default": "派出小分队"},
     "SubagentStop": {"default": "小分队回来了"},
-    "SessionStart": {"default": "出发"},
+    "SessionStart": {
+        "startup": "出发",
+        "resume": "从虚空归来",
+        "clear": "洗净石板",
+        "compact": "重新排列神经元",
+        "default": "出发"
+    },
     "PreCompact": {"default": "整理一下记忆库"},
+    "StopFailure": {"default": "任务壮烈失败"},
+    "PostCompact": {"default": "记忆库碎片整理完毕"},
+    "SessionEnd": {"default": "消散于以太"},
+    "TaskCreated": {"default": "接受任务: {task_subject}"},
+    "TaskCompleted": {"default": "任务达成: {task_subject}"},
+    "PermissionDenied": {"default": "{tool_name} 被守门人拦下"},
+    "PermissionRequest": {"default": "请求挥舞 {tool_name} 的权限"},
+    "WorktreeCreate": {"default": "长出新工作树: {name}"},
+    "WorktreeRemove": {"default": "修剪了一棵工作树"},
+    "CwdChanged": {"default": "瞬移到 {new_cwd}"},
+    "FileChanged": {"default": "{file_path} 发生了变化"},
     "ContextThreshold": {"default": "上下文已经 {threshold}% 满了"}
 }

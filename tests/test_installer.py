@@ -50,6 +50,36 @@ class TestInstallHooks:
         settings_file = tmp_claude_dir / "settings.json"
         assert settings_file.exists()
 
+    def test_install_registers_new_tier1_events(self, tmp_claude_dir):
+        settings_file = tmp_claude_dir / "settings.json"
+        settings_file.write_text("{}")
+        install_hooks(claude_dir=tmp_claude_dir)
+        settings = json.loads(settings_file.read_text())
+        hooks = settings["hooks"]
+        for event in ["StopFailure", "PostCompact", "SessionEnd", "TaskCreated",
+                       "TaskCompleted", "PermissionDenied", "PermissionRequest"]:
+            assert event in hooks, f"Missing Tier 1 event: {event}"
+
+    def test_install_registers_new_tier2_events(self, tmp_claude_dir):
+        settings_file = tmp_claude_dir / "settings.json"
+        settings_file.write_text("{}")
+        install_hooks(claude_dir=tmp_claude_dir)
+        settings = json.loads(settings_file.read_text())
+        hooks = settings["hooks"]
+        for event in ["WorktreeCreate", "WorktreeRemove", "CwdChanged", "FileChanged"]:
+            assert event in hooks, f"Missing Tier 2 event: {event}"
+
+    def test_uninstall_removes_new_events(self, tmp_claude_dir):
+        settings_file = tmp_claude_dir / "settings.json"
+        settings_file.write_text("{}")
+        install_hooks(claude_dir=tmp_claude_dir)
+        uninstall_hooks(claude_dir=tmp_claude_dir)
+        settings = json.loads(settings_file.read_text())
+        hooks = settings.get("hooks", {})
+        for event in ["StopFailure", "PostCompact", "SessionEnd", "TaskCreated",
+                       "TaskCompleted", "WorktreeCreate", "FileChanged"]:
+            assert event not in hooks, f"Event {event} not cleaned up"
+
 
 class TestUninstallHooks:
     def test_uninstall_removes_narrator_hooks(self, tmp_claude_dir):

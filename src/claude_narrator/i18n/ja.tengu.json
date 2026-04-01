@@ -10,24 +10,63 @@
         "Glob": "ファイルを探検中",
         "Grep": "コードを狩り中",
         "Agent": "助っ人を呼び出し",
-        "default": "{tool_name} を振るう"
+        "WebSearch": "ウェブに網を投げる",
+        "WebFetch": "ウェブページを掴み取る",
+        "EnterPlanMode": "作戦室に入る",
+        "ExitPlanMode": "作戦室を出る",
+        "TaskCreate": "新たなクエストを鍛造",
+        "SendMessage": "伝書鳩を放つ",
+        "NotebookEdit": "魔導書に書き込み中",
+        "Skill": "スキルを発動",
+        "EnterWorktree": "森に踏み入る",
+        "ExitWorktree": "森を出る",
+        "default": "{display_name} を振るう"
     },
     "PostToolUse": {
-        "Read": "{file_path} を吸収した",
+        "Read": "知識を吸収した: {result_summary}",
         "Write": "{file_path} が現れた",
         "Edit": "{file_path} を変形させた",
-        "Bash": "コマンドを征服",
-        "default": "{tool_name} 攻略完了"
+        "Bash": "コマンドを征服: {result_summary}",
+        "Grep": "獲物を捕らえた: {result_summary}",
+        "Glob": "宝が出土した: {result_summary}",
+        "WebSearch": "ウェブが語った: {result_summary}",
+        "default": "{display_name} 攻略完了"
     },
     "PostToolUseFailure": {
         "Bash": "コマンドがしくじった",
         "default": "{tool_name} がミスった"
     },
     "Stop": {"default": "ミッション達成"},
-    "Notification": {"default": "おーい、注目"},
+    "Notification": {
+        "idle_prompt": "神託があなたの言葉を待つ",
+        "worker_permission_prompt": "手下があなたの祝福を求めている",
+        "computer_use_enter": "マシンを憑依中",
+        "computer_use_exit": "マシンを解放",
+        "auth_success": "城門が開いた",
+        "elicitation_complete": "儀式が完了した",
+        "elicitation_response": "精霊が応えた",
+        "default": "おーい、注目"
+    },
     "SubagentStart": {"default": "手下を派遣"},
     "SubagentStop": {"default": "手下が帰還"},
-    "SessionStart": {"default": "行くぞ"},
+    "SessionStart": {
+        "startup": "行くぞ",
+        "resume": "虚空から帰還",
+        "clear": "白紙に戻した",
+        "compact": "ニューロンを再配列",
+        "default": "行くぞ"
+    },
     "PreCompact": {"default": "記憶の整理整頓中"},
+    "StopFailure": {"default": "ミッション壮絶に失敗"},
+    "PostCompact": {"default": "記憶バンクのデフラグ完了"},
+    "SessionEnd": {"default": "エーテルへ消えゆく"},
+    "TaskCreated": {"default": "クエスト受注: {task_subject}"},
+    "TaskCompleted": {"default": "クエスト達成: {task_subject}"},
+    "PermissionDenied": {"default": "{tool_name} 門番にブロックされた"},
+    "PermissionRequest": {"default": "{tool_name} を振るう許可を求む"},
+    "WorktreeCreate": {"default": "新たなワークツリーが芽吹いた: {name}"},
+    "WorktreeRemove": {"default": "ワークツリーを剪定"},
+    "CwdChanged": {"default": "{new_cwd} にテレポート"},
+    "FileChanged": {"default": "{file_path} が変異した"},
     "ContextThreshold": {"default": "コンテキストが {threshold}% になった"}
 }

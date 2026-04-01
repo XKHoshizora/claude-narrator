@@ -2,8 +2,15 @@
 
 from __future__ import annotations
 
-MINIMAL_EVENTS = {"Stop", "Notification", "PostToolUseFailure", "ContextThreshold"}
-NORMAL_EVENTS = MINIMAL_EVENTS | {"SubagentStart", "SubagentStop"}
+MINIMAL_EVENTS = {
+    "Stop", "Notification", "PostToolUseFailure", "ContextThreshold",
+    "StopFailure", "PermissionDenied", "PermissionRequest",
+}
+NORMAL_EVENTS = MINIMAL_EVENTS | {
+    "SubagentStart", "SubagentStop",
+    "SessionStart", "SessionEnd",
+    "PostCompact", "TaskCreated", "TaskCompleted",
+}
 NORMAL_TOOLS = {"Read", "Write", "Edit", "Glob", "Grep", "Agent"}
 
 

@@ -40,6 +40,11 @@ def forward_event(
 
 def main() -> None:
     """Entry point for hook script."""
+    # Signal Claude Code to not wait for us (async hook protocol).
+    # Claude Code sees {"async": true} on stdout and immediately continues.
+    sys.stdout.write('{"async": true}\n')
+    sys.stdout.flush()
+
     event = parse_event(sys.stdin)
     if event is not None:
         forward_event(event)

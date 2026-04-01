@@ -144,3 +144,44 @@ class TestDaemon:
         daemon.reload_config()
         assert isinstance(daemon._engine, EdgeTTSEngine)
         assert daemon._engine._voice == "zh-CN-XiaoxiaoNeural"
+
+
+class TestCacheIntegration:
+    def test_cache_enabled_by_default(self, tmp_config_dir):
+        from claude_narrator.daemon import Daemon
+        config = {
+            "general": {"verbosity": "normal", "language": "en", "enabled": True},
+            "tts": {"engine": "edge-tts", "voice": "en-US-AriaNeural"},
+            "narration": {"mode": "template", "max_queue_size": 5,
+                          "max_narration_seconds": 15, "skip_rapid_events": True},
+            "cache": {"enabled": True, "max_size_mb": 50},
+            "filters": {},
+        }
+        daemon = Daemon(config=config, config_dir=tmp_config_dir)
+        assert daemon._cache is not None
+
+    def test_cache_disabled(self, tmp_config_dir):
+        from claude_narrator.daemon import Daemon
+        config = {
+            "general": {"verbosity": "normal", "language": "en", "enabled": True},
+            "tts": {"engine": "edge-tts", "voice": "en-US-AriaNeural"},
+            "narration": {"mode": "template", "max_queue_size": 5,
+                          "max_narration_seconds": 15, "skip_rapid_events": True},
+            "cache": {"enabled": False},
+            "filters": {},
+        }
+        daemon = Daemon(config=config, config_dir=tmp_config_dir)
+        assert daemon._cache is None
+
+    def test_coalescer_window_is_half_second(self, tmp_config_dir):
+        from claude_narrator.daemon import Daemon
+        config = {
+            "general": {"verbosity": "normal", "language": "en", "enabled": True},
+            "tts": {"engine": "edge-tts", "voice": "en-US-AriaNeural"},
+            "narration": {"mode": "template", "max_queue_size": 5,
+                          "max_narration_seconds": 15, "skip_rapid_events": True},
+            "cache": {"enabled": False},
+            "filters": {},
+        }
+        daemon = Daemon(config=config, config_dir=tmp_config_dir)
+        assert daemon._coalescer._window == 0.5

@@ -10,6 +10,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
+from claude_narrator.cache import AudioCache
 from claude_narrator.config import CONFIG_DIR, load_config
 from claude_narrator.ipc import create_server
 from claude_narrator.ipc.base import IPCServer
@@ -85,8 +86,13 @@ class Daemon:
             max_size=self._config["narration"]["max_queue_size"]
         )
         self._coalescer = EventCoalescer(
-            window_seconds=2.0 if self._config["narration"]["skip_rapid_events"] else 0.0
+            window_seconds=0.5 if self._config["narration"]["skip_rapid_events"] else 0.0
         )
+        cache_cfg = self._config.get("cache", {})
+        self._cache: AudioCache | None = AudioCache(
+            cache_dir=self._config_dir / "cache",
+            max_size_mb=cache_cfg.get("max_size_mb", 50),
+        ) if cache_cfg.get("enabled", True) else None
         self._engine: TTSEngine | None = None
         self._player: AudioPlayer | None = None
         self._server: IPCServer | None = None
@@ -173,7 +179,7 @@ class Daemon:
 
         # Rebuild coalescer
         self._coalescer = EventCoalescer(
-            window_seconds=2.0 if self._config["narration"]["skip_rapid_events"] else 0.0
+            window_seconds=0.5 if self._config["narration"]["skip_rapid_events"] else 0.0
         )
 
         # Rebuild TTS engine
@@ -256,9 +262,20 @@ class Daemon:
         if not self._engine or not self._player:
             return
         try:
-            audio = await self._engine.synthesize(
-                text, language=self._config["general"]["language"]
-            )
+            engine_name = self._config["tts"]["engine"]
+            voice = self._config["tts"].get("voice", "")
+            lang = self._config["general"]["language"]
+
+            # Check cache first
+            audio: bytes | None = None
+            if self._cache:
+                audio = self._cache.get(engine_name, voice, lang, text)
+
+            if audio is None:
+                audio = await self._engine.synthesize(text, language=lang)
+                if self._cache and audio:
+                    self._cache.put(engine_name, voice, lang, text, audio)
+
             await self._player.play(audio)
             # Wait for playback, but check for high-priority interrupts
             while self._player.is_playing:

@@ -38,9 +38,9 @@ class TestBackwardCompatibility:
 
 
 class TestTenguPersonality:
-    def test_has_90_prefixes(self):
+    def test_has_187_prefixes(self):
         narrator = TemplateNarrator("en", "tengu")
-        assert len(narrator._all_prefixes) == 90
+        assert len(narrator._all_prefixes) == 187
 
     def test_narrate_has_prefix(self):
         narrator = TemplateNarrator("en", "tengu")
@@ -109,7 +109,7 @@ class TestMultiPersonality:
 
     def test_prefix_pool_merged(self):
         narrator = TemplateNarrator("en", ["tengu", "concise"])
-        assert len(narrator._all_prefixes) == 90  # only tengu has prefixes
+        assert len(narrator._all_prefixes) == 187  # only tengu has prefixes
 
 
 class TestContextThreshold:
@@ -131,7 +131,7 @@ class TestContextThreshold:
 class TestMultiLanguage:
     def test_chinese_tengu(self):
         narrator = TemplateNarrator("zh", "tengu")
-        assert len(narrator._all_prefixes) == 90  # same tengu words
+        assert len(narrator._all_prefixes) == 187  # same tengu words
 
     def test_japanese_professional(self):
         narrator = TemplateNarrator("ja", "professional")
